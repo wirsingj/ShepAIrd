@@ -1,0 +1,37 @@
+yaiml: 0.2
+project:
+  id: stewaird
+  name: StewAIrd
+role: private-portfolio-command-hub-memory-index
+documents:
+  sot:
+    path: SOT.md
+    title: StewAIrd State Of The Project
+  architecture:
+    path: ARCHITECTURE.md
+    title: StewAIrd Architecture
+  maintainer:
+    path: MAINTAINER_GUIDE.md
+    title: StewAIrd Maintainer Guide
+registry:
+  projects: registry/projects.json
+generated:
+  - output/project-status.md
+  - output/capability-map.md
+  - output/codex-task-map.md
+  - output/runs/
+guidance:
+  - Re-read YAIML before changing dependency interpretation.
+  - Treat StewAIrd as the human's thin local Codex instruction router for managed repositories, not a model-replacement app.
+  - Assume the normal operator is Codex working in this project folder; keep interfaces scriptable and evidence-oriented.
+  - Use YAIML internally to separate state, architecture, maintainer workflow, evidence, and agent constraints.
+  - Treat Plan-mode campaign lenses such as security, performance, bugs, architecture, readability, release readiness, test coverage, docs drift, and YAIML compliance as ephemeral handoff-context builders; do not store campaign packet files.
+  - Treat campaign Apply as dispatch-only unless a real handoff dispatcher is configured; dispatched does not mean downstream audit work is complete.
+  - Do not build broad local audit or fix engines into StewAIrd; repository-specific reasoning belongs in Codex repo context, with StewAIrd providing routing, prompts, validation, and tiny support utilities.
+  - Treat optional registry codexThread metadata as routing compatibility only; do not infer or auto-write ambiguous task IDs.
+  - Use the Codex task map as a routing preflight before dispatching work to repo tasks; it is not proof of task execution.
+  - Treat resume as a conservative run-record helper: skip previous matching completed/dispatched repos only.
+  - Keep CLI help current when campaign handoff, resume, validation, or output behavior changes.
+  - Treat shallow docs/YAIML content signals as audit pointers, not findings.
+  - Treat temporary ARCS manifests as YAIML cleanup signals.
+  - Do not commit, push, publish, release, deploy, move repositories, or extract shared packages without explicit human permission.

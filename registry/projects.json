@@ -1,0 +1,473 @@
+{
+  "schema": "stewaird.registry.v0",
+  "workspaceRoot": "..",
+  "managedPolicy": "apply commands target active projects with managed true; discovered repositories are inspect-only until added or explicitly included",
+  "generatedFrom": "Manual audit plus workspace reconciliation of C:/Users/wirsi/OneDrive/Desktop/git on 2026-07-15",
+  "dependencyOrder": [
+    "yaiml",
+    "stewaird",
+    "llamasaddle",
+    "chaitroom",
+    "lorekeeper",
+    "spritewrite",
+    "maicroflow",
+    "aiwiki",
+    "ytfictiongen",
+    "oobhunter",
+    "ooze-tactics",
+    "ytmmocaptions"
+  ],
+  "projects": [
+    {
+      "id": "yaiml",
+      "name": "YAIML",
+      "kind": "governing-standard",
+      "path": "../YAIML",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 0,
+      "statusDocuments": ["docs/SoTY.md"],
+      "architectureDocuments": ["docs/ARCHITECTURE.md"],
+      "maintainerDocuments": ["docs/MAINTAINER_GUIDE.md"],
+      "agentInstructions": ["AGENTS.md"],
+      "yaimlDocuments": ["yaiml.yml", "docs/SoTY.md", "docs/ARCHITECTURE.md", "docs/MAINTAINER_GUIDE.md"],
+      "dependsOn": [],
+      "capabilities": {
+        "produces": ["yaiml-project-memory"],
+        "consumes": []
+      },
+      "validation": ["document review"],
+      "interfaceEvidence": [
+        {
+          "capability": "yaiml-project-memory",
+          "role": "producer",
+          "paths": ["yaiml.yml", "docs/SoTY.md", "docs/ARCHITECTURE.md", "docs/MAINTAINER_GUIDE.md"],
+          "summary": "Defines the YAIML project-memory convention family StewAIrd consumes internally."
+        }
+      ],
+      "codexThread": {
+        "threadId": "019f0792-f4a7-7592-b005-acc981214ff4",
+        "hostId": "local",
+        "title": "Realign YAIML project scope",
+        "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\YAIML"
+      },
+      "notes": "Governing YAIML project. Re-read before processing dependent repositories."
+    },
+    {
+      "id": "stewaird",
+      "name": "StewAIrd",
+      "kind": "personal-meta-coordination-layer",
+      "path": ".",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 1,
+      "statusDocuments": ["SOT.md"],
+      "architectureDocuments": ["ARCHITECTURE.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md"],
+      "agentInstructions": ["AGENTS.md"],
+      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["project-registry", "capability-map", "codex-handoff-context"],
+        "consumes": ["yaiml-project-memory"]
+      },
+      "validation": ["npm test", "npm run build", "npm run all"],
+      "interfaceEvidence": [
+        {
+          "capability": "project-registry",
+          "role": "producer",
+          "paths": ["registry/projects.json", "src/registry.mjs"],
+          "summary": "Registry schema and loader for project graph/status/capability reporting."
+        },
+        {
+          "capability": "repo-intake-token-strip",
+          "role": "producer",
+          "paths": ["src/intake.mjs", "src/intakeView.mjs", "shell/main.mjs"],
+          "summary": "Ad hoc repo-folder scanning and spaceship-style Token Strip shell."
+        }
+      ],
+      "codexThread": {
+        "threadId": "019f5321-110d-7703-b291-1d3faf6bd810",
+        "hostId": "local",
+        "title": "Verify repo rename",
+        "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\StewAIrd"
+      },
+      "notes": "Private human-controlled meta-project for project status, capability mapping, and thin Codex handoff context."
+    },
+    {
+      "id": "llamasaddle",
+      "name": "LlamaSaddle",
+      "kind": "upstream-placeholder",
+      "path": "../llamasaddle",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 2,
+      "statusDocuments": ["SOT.md"],
+      "architectureDocuments": ["ARCHITECTURE.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md"],
+      "agentInstructions": [],
+      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": [],
+        "consumes": ["yaiml-project-memory"]
+      },
+      "validation": ["git status review"],
+      "notes": "Active repository exists, but no implementation files were found during this audit."
+    },
+    {
+      "id": "chaitroom",
+      "name": "Chaitroom",
+      "kind": "multi-agent-chat-runtime",
+      "path": "../chaitroom",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 3,
+      "statusDocuments": ["SOT.md"],
+      "architectureDocuments": ["ARCHITECTURE.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md"],
+      "agentInstructions": [],
+      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["provider-adapter-contract", "bounded-agent-routing", "multi-agent-room-transcript"],
+        "consumes": ["structured-model-output", "ollama-openai-compatible-api"]
+      },
+      "validation": [
+        { "command": "go test ./...", "cwd": "backend" },
+        { "command": "npm run build", "cwd": "frontend" }
+      ],
+      "interfaceEvidence": [
+        {
+          "capability": "provider-adapter-contract",
+          "role": "producer",
+          "paths": [
+            "backend/internal/agent/adapter.go",
+            "backend/internal/provider/ollama.go",
+            "backend/internal/provider/openai.go",
+            "backend/internal/service/chat_service.go"
+          ],
+          "summary": "AgentAdapter boundary, provider clients, structured output parsing, and bounded routing."
+        }
+      ],
+      "notes": "Go backend contains AgentAdapter, provider clients, structured JSON parsing, visible-history filtering, and bounded AI-to-AI routing."
+    },
+    {
+      "id": "lorekeeper",
+      "name": "LoreKeeper",
+      "kind": "tabletop-ai-application",
+      "path": "../lorekeeper",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 4,
+      "statusDocuments": ["docs/state-of-the-table.md"],
+      "architectureDocuments": ["docs/ARCHITECTURE.md"],
+      "maintainerDocuments": ["docs/MAINTAINER_GUIDE.md"],
+      "agentInstructions": ["AGENTS.md"],
+      "yaimlDocuments": ["yaiml.yml", "docs/state-of-the-table.md", "docs/ARCHITECTURE.md", "docs/MAINTAINER_GUIDE.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["provider-response-review", "table-authority-rails", "local-ollama-provider-runtime"],
+        "consumes": ["provider-adapter-contract", "structured-model-output", "human-approval-gate"]
+      },
+      "validation": ["npm run test:engine"],
+      "interfaceEvidence": [
+        {
+          "capability": "provider-adapter-contract",
+          "role": "consumer",
+          "paths": [
+            "src/ai/provider-settings.js",
+            "src/ai/ollama-provider.js",
+            "src/ai/provider-service.js",
+            "src/model-contract/turn-json-contract.js"
+          ],
+          "summary": "Provider settings/runtime plus structured turn contract and table-owned validation/recovery."
+        }
+      ],
+      "codexThread": {
+        "threadId": "019edf2c-b50d-7fd1-836e-06616422401b",
+        "hostId": "local",
+        "title": "Add remote table access plan",
+        "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\lorekeeper"
+      },
+      "notes": "Provider output is treated as proposals inside app-owned table state, recovery, and authority rails."
+    },
+    {
+      "id": "spritewrite",
+      "name": "SpriteWrite",
+      "kind": "structured-ai-patch-tool",
+      "path": "../SpriteWrite",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 4,
+      "statusDocuments": ["SOT.md"],
+      "architectureDocuments": ["ARCHITECTURE.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md"],
+      "agentInstructions": ["AGENTS.md"],
+      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["structured-patch-proposal-contract", "preview-apply-reject-loop"],
+        "consumes": ["provider-adapter-contract", "structured-model-output", "human-approval-gate"]
+      },
+      "validation": ["npm test"],
+      "interfaceEvidence": [
+        {
+          "capability": "provider-adapter-contract",
+          "role": "consumer",
+          "paths": [
+            "src/providers/ollamaPatchProvider.ts",
+            "src/providers/mockPatchProvider.ts",
+            "src/domain/spriteData.ts"
+          ],
+          "summary": "AI providers return explicit patch operations validated before preview/apply/reject."
+        }
+      ],
+      "codexThread": {
+        "threadId": "019eded2-191c-7a00-8e36-5e1e4b81501b",
+        "hostId": "local",
+        "title": "Clone SpriteWrite repo",
+        "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\SpriteWrite"
+      },
+      "notes": "AI may propose explicit cell patch operations only; project data remains canonical."
+    },
+    {
+      "id": "maicroflow",
+      "name": "mAIcroFlow",
+      "kind": "screen-aware-workflow-tool",
+      "path": "../mAIcroFlow",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 4,
+      "statusDocuments": ["SOT.md"],
+      "architectureDocuments": ["ARCHITECTURE.md", "AI_WORKFLOW_CONTRACT.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md"],
+      "agentInstructions": [],
+      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md", "AI_WORKFLOW_CONTRACT.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["screen-observation-contract", "workflow-review-gate"],
+        "consumes": ["structured-model-output", "human-approval-gate", "local-ollama-provider-runtime"]
+      },
+      "validation": ["npm run validate", "go test ./..."],
+      "interfaceEvidence": [
+        {
+          "capability": "structured-model-output",
+          "role": "consumer",
+          "paths": [
+            "AI_WORKFLOW_CONTRACT.md",
+            "src/main/services/workflowRunner.ts",
+            "src/main/services/ollama.ts",
+            "src/main/services/workflowHandlers.ts"
+          ],
+          "summary": "Local vision output is converted into structured observations and reviewed actions."
+        }
+      ],
+      "codexThread": {
+        "threadId": "019ee1a9-b933-7642-a751-448f88028523",
+        "hostId": "local",
+        "title": "Revamp mAIcroFlow",
+        "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\mAIcroFlow"
+      },
+      "notes": "Visible pixels in, explicit workflow actions out; local AI interprets inside workflow nodes."
+    },
+    {
+      "id": "aiwiki",
+      "name": "AIWIKI",
+      "kind": "downstream-ai-application",
+      "path": "../aiwiki",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 5,
+      "statusDocuments": ["SOT.md", "STATUS.md"],
+      "architectureDocuments": ["ARCHITECTURE.md", "README.md", "DEPLOYMENT.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md", "docs/DEV_WORKFLOW.md"],
+      "agentInstructions": [],
+      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["article-generator-interface", "provider-health-surface"],
+        "consumes": ["provider-adapter-contract", "structured-model-output", "hosted-or-local-provider-choice"]
+      },
+      "validation": [
+        { "command": "go test ./...", "cwd": "backend" },
+        { "command": "npm run build", "cwd": "frontend" }
+      ],
+      "interfaceEvidence": [
+        {
+          "capability": "provider-adapter-contract",
+          "role": "consumer",
+          "paths": [
+            "backend/internal/article/service.go",
+            "backend/internal/ollama/client.go",
+            "backend/internal/hosted/client.go",
+            "backend/internal/demo/client.go"
+          ],
+          "summary": "Article generator interface with local, hosted, and deterministic demo implementations."
+        }
+      ],
+      "notes": "Downstream example using local Ollama, hosted OpenAI-compatible, and deterministic demo providers behind one article generator interface."
+    },
+    {
+      "id": "ytfictiongen",
+      "name": "ytfictiongen",
+      "kind": "downstream-media-application",
+      "path": "../ytdoc",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 5,
+      "statusDocuments": ["SOT.md"],
+      "architectureDocuments": ["ARCHITECTURE.md", "docs/GENERATION_FLOW.md", "docs/MODEL_PROVIDERS.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md"],
+      "agentInstructions": ["AGENTS.md"],
+      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["local-media-generation-pipeline"],
+        "consumes": ["provider-adapter-contract", "structured-model-output", "human-approval-gate"]
+      },
+      "validation": [
+        "go test ./cmd/... ./internal/...",
+        { "command": "npm run build", "cwd": "web" }
+      ],
+      "interfaceEvidence": [
+        {
+          "capability": "provider-adapter-contract",
+          "role": "consumer",
+          "paths": [
+            "internal/app/ai.go",
+            "internal/app/prompts.go",
+            "internal/app/template_generator.go",
+            "internal/app/production.go"
+          ],
+          "summary": "Local-first staged text/media generation with deterministic fallbacks and approval gates."
+        }
+      ],
+      "codexThread": {
+        "threadId": "019f50a4-047b-76a0-83d0-8ed23a7951dc",
+        "hostId": "local",
+        "title": "Audit and evolve ytfictiongen",
+        "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\ytdoc"
+      },
+      "notes": "Downstream app with staged generation approvals, local text/media providers, and deterministic fallbacks."
+    },
+    {
+      "id": "oobhunter",
+      "name": "OOBHunter",
+      "kind": "unreal-first-game-prototype",
+      "path": "../OOBHunter",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 5,
+      "statusDocuments": ["SOT.md", "STATUS.md"],
+      "architectureDocuments": ["ARCHITECTURE.md", "README.md", "DESIGN.md", "Unreal/README_UNREAL.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md"],
+      "agentInstructions": [],
+      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["first-person-out-of-bounds-prototype", "unreal-playtest-loop"],
+        "consumes": ["yaiml-project-memory"]
+      },
+      "validation": [
+        "python -c \"import ast,pathlib; [ast.parse(pathlib.Path(p).read_text()) for p in ['Unreal/Scripts/audit_oobhunter_unreal.py','Unreal/Scripts/configure_oobhunter_player.py','Unreal/Scripts/create_oobhunter_showcase.py']]\"",
+        { "command": "Unreal Python audit", "kind": "manual" },
+        { "command": "manual playtest review", "kind": "manual" },
+        "git status review"
+      ],
+      "interfaceEvidence": [
+        {
+          "capability": "unreal-playtest-loop",
+          "role": "producer",
+          "paths": [
+            "README.md",
+            "STATUS.md",
+            "Unreal/README_UNREAL.md",
+            "Unreal/Scripts/audit_oobhunter_unreal.py"
+          ],
+          "summary": "Unreal-first QA calibration room with launch scripts, audit helper, and human playtest criteria."
+        }
+      ],
+      "notes": "Codex-created game prototype focused on authored out-of-bounds discovery; currently documented as an Unreal-first one-room playable target."
+    },
+    {
+      "id": "ooze-tactics",
+      "name": "ooze-tactics",
+      "kind": "godot-tactics-game",
+      "path": "../ooze-tactics",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 5,
+      "statusDocuments": ["SOT.md", "STEAM_READINESS_STATUS.md", "README.md"],
+      "architectureDocuments": ["ARCHITECTURE.md", "README.md", "docs/ART_25D_PIPELINE.md", "docs/visual/graphics_goal_v1.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md", "README.md", "STEAM_READINESS_STATUS.md"],
+      "agentInstructions": [],
+      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["godot-turn-based-tactics-loop", "steam-demo-readiness-snapshot"],
+        "consumes": ["yaiml-project-memory"]
+      },
+      "validation": [
+        "cmd /d /s /c godot --headless --path . -s res://tests/run_tests.gd",
+        { "command": "manual visual review", "kind": "manual" },
+        "git status review"
+      ],
+      "interfaceEvidence": [
+        {
+          "capability": "godot-turn-based-tactics-loop",
+          "role": "producer",
+          "paths": [
+            "README.md",
+            "STEAM_READINESS_STATUS.md",
+            "tests/run_tests.gd",
+            "project.godot"
+          ],
+          "summary": "Godot 4.5 tactics prototype with deterministic game flow, headless tests, and Steam-readiness notes."
+        }
+      ],
+      "notes": "Codex-created tactics game repo with a stable 2D gameplay truth, active 3D/Steam-demo readiness work, and Godot-dependent validation."
+    },
+    {
+      "id": "ytmmocaptions",
+      "name": "YTMMOCC",
+      "kind": "production-browser-extension",
+      "path": "../ytmmocaptions",
+      "managed": true,
+      "lifecycle": "active",
+      "dependencyTier": 5,
+      "statusDocuments": ["STATE_OF_THE_UNION.md"],
+      "architectureDocuments": ["ARCHITECTURE.md"],
+      "maintainerDocuments": ["MAINTAINER_GUIDE.md", "RELEASE.md", "QA_CHECKLIST.md"],
+      "agentInstructions": ["AGENTS.md"],
+      "yaimlDocuments": ["yaiml.yml", "STATE_OF_THE_UNION.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md", "docs/YAIML.md"],
+      "dependsOn": ["yaiml"],
+      "capabilities": {
+        "produces": ["youtube-caption-dialogue-extension", "browser-extension-release-pipeline"],
+        "consumes": ["yaiml-project-memory"]
+      },
+      "validation": ["npm run build", "npm test"],
+      "interfaceEvidence": [
+        {
+          "capability": "browser-extension-release-pipeline",
+          "role": "producer",
+          "paths": [
+            "README.md",
+            "MAINTAINER_GUIDE.md",
+            "manifest.chrome.json",
+            "manifest.firefox.json",
+            ".github/workflows/1-prepare-release.yml"
+          ],
+          "summary": "Production Chrome/Firefox WebExtension with release packaging, store workflow docs, and mature YAIML project memory."
+        }
+      ],
+      "codexThread": {
+        "threadId": "019f0232-8e9f-7cd3-a41f-900aea4c6841",
+        "hostId": "local",
+        "title": "Investigate highlight rewind bug",
+        "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\ytmmocaptions"
+      },
+      "notes": "Codex-created production/released repo; treat as one of the most mature portfolio projects rather than an experimental side repo."
+    }
+  ]
+}

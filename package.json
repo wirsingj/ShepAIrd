@@ -1,0 +1,27 @@
+{
+  "name": "stewaird",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Human-controlled coordination layer for related AI projects.",
+  "scripts": {
+    "build": "node scripts/build-shell.mjs",
+    "shell": "electron shell/main.mjs",
+    "intake": "electron shell/main.mjs",
+    "test": "node --test",
+    "help": "node src/cli.mjs help",
+    "status": "node src/cli.mjs status",
+    "threads": "node src/cli.mjs threads",
+    "portfolio:inspect": "node src/cli.mjs portfolio inspect \"Inspect all managed projects\"",
+    "portfolio:plan": "node src/cli.mjs portfolio plan \"Plan the next YAIML-defined step for every active managed repository\"",
+    "portfolio:validate": "node src/cli.mjs portfolio validate \"Validate all managed projects\"",
+    "portfolio:apply": "node src/cli.mjs portfolio apply \"Continue one YAIML-defined step in every active managed repository\"",
+    "all": "node src/cli.mjs all"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "electron": "^43.1.0"
+  }
+}

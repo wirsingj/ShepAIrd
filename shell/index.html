@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StewAIrd Intake</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="bridge" id="drop-zone">
+        <div class="bridge-radar" aria-hidden="true">
+          <span class="radar-core"></span>
+          <span class="radar-ring ring-one"></span>
+          <span class="radar-ring ring-two"></span>
+          <span class="radar-sweep"></span>
+        </div>
+        <div class="bridge-copy">
+          <p class="eyebrow">StewAIrd command hub</p>
+          <h1>One command. Repository-specific work.</h1>
+          <p>Scan the managed workspace, inspect or plan across projects, or run an explicit bounded apply command through StewAIrd's direct executor.</p>
+        </div>
+        <div class="bridge-actions">
+          <button id="scan-workspace" type="button">Scan workspace fleet</button>
+          <button id="select-folders" type="button">Select folders</button>
+        </div>
+      </section>
+
+      <section class="scan-summary" aria-live="polite">
+        <p id="scan-count">No folders scanned.</p>
+        <div class="pattern-bar" id="pattern-bar"></div>
+      </section>
+
+      <section class="command-console">
+        <label for="portfolio-command">Portfolio command</label>
+        <div class="command-row">
+          <input id="portfolio-command" type="text" value="Inspect all managed projects" />
+          <button id="run-inspect" type="button">Inspect</button>
+          <button id="run-plan" type="button">Plan</button>
+          <button id="run-apply" type="button">Apply</button>
+        </div>
+        <pre id="command-output">No portfolio command run yet.</pre>
+      </section>
+
+      <section class="workspace">
+        <div class="fleet-map">
+          <div class="fleet-line" aria-hidden="true"></div>
+          <div class="fleet-label">Project token strip</div>
+        </div>
+        <div class="token-strip" id="token-strip"></div>
+        <aside class="detail-panel" id="detail-panel"></aside>
+      </section>
+    </main>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
