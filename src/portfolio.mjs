@@ -769,7 +769,9 @@ function buildCampaignHandoff(project, docset, git, lensId, fileSignals = { file
     objective: lens.objective,
     command: `Run a ${lens.title.toLowerCase()} for ${project.name}; ${options.requestedFixes ? "fix safe bounded issues," : "report findings,"} run validation, and update affected YAIML docs when project truth changes.`,
     repositoryPath: project.absolutePath,
+    codexProject: project.codexProject ?? null,
     codexThread: project.codexThread ?? null,
+    routeGuard: buildCodexRouteGuard(project),
     git: formatGitSnapshot(git),
     yaimlDocuments: [
       ...docset.statusDocuments,
@@ -796,6 +798,9 @@ function buildCampaignHandoffPrompt(project, handoff, options = {}) {
     `Repository: ${handoff.repositoryPath}`,
     `Objective: ${handoff.objective}`,
     `Fix safe bounded issues: ${options.requestedFixes ? "yes" : "no; report findings only unless already explicitly authorized"}`,
+    "",
+    "Routing guard:",
+    ...formatPromptList(handoff.routeGuard),
     "",
     "Read first:",
     ...formatPromptList(handoff.yaimlDocuments),
@@ -826,6 +831,39 @@ function buildCampaignHandoffPrompt(project, handoff, options = {}) {
 
 function formatPromptList(items = []) {
   return items.length ? items.map((item) => `- ${item}`) : ["- none"];
+}
+
+function buildCodexRouteGuard(project) {
+  const codexProject = project.codexProject;
+  const thread = project.codexThread;
+  const lines = [
+    `Repository scope: ${project.absolutePath}`,
+    "Work only inside the repository scope above.",
+  ];
+  if (!codexProject?.projectId) {
+    lines.push("No saved repo-root Codex Project is recorded; prefer creating/using a repo-specific Project before durable dispatch.");
+  } else {
+    lines.push(`Codex Project: ${codexProject.hostId ? `${codexProject.hostId}/` : ""}${codexProject.projectId}${codexProject.label ? ` (${codexProject.label})` : ""}`);
+    if (codexProject.path) {
+      lines.push(`Codex Project path: ${codexProject.path}`);
+      lines.push("Stop if the Codex Project path does not match the repository scope.");
+    }
+  }
+  if (!thread?.threadId) {
+    lines.push("No mapped touchpoint task is recorded; confirm or create the correct repo task before dispatching.");
+    return lines;
+  }
+  lines.push(`Mapped touchpoint task: ${thread.hostId ? `${thread.hostId}/` : ""}${thread.threadId}${thread.title ? ` (${thread.title})` : ""}`);
+  if (thread.cwd) {
+    lines.push(`Task cwd: ${thread.cwd}`);
+  }
+  if (thread.scopePath) {
+    lines.push(`Task scopePath: ${thread.scopePath}`);
+    lines.push("This is a parent-workspace task; stop if the task scopePath does not match the repository scope.");
+  } else {
+    lines.push("This is a repo-root task; stop if the task cwd does not match the repository scope.");
+  }
+  return lines;
 }
 
 function inferAuditSurfaces(project, docset, lens, fileSignals = { files: [], manifestSummaries: [] }, contentSignals = []) {

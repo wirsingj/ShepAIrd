@@ -237,6 +237,13 @@ test("campaign apply dispatches thin Codex handoff when a dispatcher is configur
   await writeRegistry(fixture, [
     project("managed-a", "Managed A", "managed-a", {
       validation: ["npm test"],
+      codexProject: {
+        projectId: repo,
+        hostId: "local",
+        label: "Managed A",
+        path: repo,
+        kind: "local",
+      },
       codexThread: { threadId: "thread-managed-a", hostId: "local", title: "Managed A task" },
       interfaceEvidence: [
         {
@@ -264,11 +271,44 @@ test("campaign apply dispatches thin Codex handoff when a dispatcher is configur
   assert.equal(run.repositories[0].status, "dispatched");
   assert.equal(run.repositories[0].handoff.target, "thread:managed-a");
   assert.equal(dispatches.length, 1);
+  assert.equal(dispatches[0].handoff.codexProject.projectId, repo);
   assert.equal(dispatches[0].handoff.codexThread.threadId, "thread-managed-a");
+  assert.match(dispatches[0].handoff.prompt, /Codex Project:/);
   assert.match(dispatches[0].handoff.prompt, /Fix safe bounded issues: yes/);
   assert.match(dispatches[0].handoff.prompt, /Read first:/);
   assert.match(dispatches[0].handoff.prompt, /Validation:\n- npm test/);
   assert.match(await readFile(run.recordPaths.markdownPath, "utf8"), /Dispatched: 1/);
+});
+
+test("campaign handoff prompt includes route guard for parent-workspace scoped tasks", async (t) => {
+  const fixture = await makeFixture(t);
+  const parent = fixture.root;
+  const repo = path.join(fixture.root, "managed-a");
+  await makeRepo(repo);
+  await writeYaiml(repo, "SOT.md");
+  await writeRegistry(fixture, [
+    project("managed-a", "Managed A", "managed-a", {
+      codexThread: {
+        threadId: "thread-managed-a",
+        hostId: "local",
+        title: "Managed A parent task",
+        cwd: parent,
+        scopePath: repo,
+      },
+    }),
+  ], ["managed-a"]);
+
+  const run = await runPortfolioCommand("Plan a security audit across all managed repositories", {
+    registryPath: fixture.registryPath,
+    outputDir: path.join(fixture.root, "runs"),
+  });
+
+  const prompt = run.repositories[0].campaignHandoff.prompt;
+  assert.match(prompt, /Routing guard:/);
+  assert.match(prompt, /Repository scope:/);
+  assert.match(prompt, /Task cwd:/);
+  assert.match(prompt, /Task scopePath:/);
+  assert.match(prompt, /parent-workspace task/);
 });
 
 test("validate mode runs registered checks without mutating YAIML state", async (t) => {
@@ -469,6 +509,7 @@ function project(id, name, repoPath, overrides = {}) {
     capabilities: overrides.capabilities ?? { produces: [], consumes: [] },
     validation: overrides.validation ?? ["git status review"],
     interfaceEvidence: overrides.interfaceEvidence ?? [],
+    codexProject: overrides.codexProject ?? undefined,
     codexThread: overrides.codexThread ?? undefined,
     notes: "Fixture project.",
   };

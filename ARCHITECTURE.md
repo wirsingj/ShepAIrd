@@ -29,7 +29,7 @@ StewAIrd may inspect, plan, dispatch, and, for implemented bounded Apply actions
 
 - `yaiml.yml`: StewAIrd's own YAIML memory index.
 - `registry/projects.json`: managed-project policy, dependency order, registry paths, capabilities, validation commands, and evidence pointers.
-- `src/registry.mjs`: registry loader, project inspector, status report builder, capability mapper, and Codex task-map reporter.
+- `src/registry.mjs`: registry loader, project inspector, status report builder, capability mapper, and Codex Project/task route-map reporter.
 - `src/intake.mjs`: workspace/repo scanner used by the shell.
 - `src/intakeView.mjs`: dependency-free Token Strip and dossier rendering helpers.
 - `src/portfolio.mjs`: portfolio command interpreter, workspace discovery, registry reconciliation, YAIML manifest reader, direct executor, validation runner, blocker isolation, and run-record writer.
@@ -116,16 +116,25 @@ Each project entry records:
 - validation commands,
 - optional validation working directories,
 - optional interface evidence entries with capability, role, source paths, and summary,
-- optional `codexThread` compatibility metadata with `threadId`, `hostId`, `title`, and `cwd`,
+- optional `codexProject` compatibility metadata with `projectId`, `hostId`, `label`, `path`, and `kind`,
+- optional `codexThread` touchpoint metadata with `threadId`, `hostId`, `title`, `cwd`, and `scopePath`,
 - notes from audit evidence.
 
 Discovered repositories that are not managed are inspect-only until explicitly included by policy or command scope.
 
-## Codex Task Routing
+## Codex Project And Task Routing
 
-Codex task metadata is a lightweight bridge between StewAIrd's registry and the Codex app's task/thread tools. A mapped repository can record the opaque task id, host id, human title, and task cwd. StewAIrd validates this metadata only as local routing evidence: it can report mapped and unmapped repositories, compare task cwd against registry path, and include the mapping in handoff context.
+Codex Project and task metadata is a lightweight bridge between StewAIrd's registry and the Codex app's Project/task tools. A mapped repository can record the saved Codex Project's opaque id, host id, label, kind, and local path, plus one durable touchpoint task's opaque task id, host id, human title, task cwd, and optional repository `scopePath`. StewAIrd validates this metadata only as local routing evidence: it can report saved or missing Projects, mapped or missing touchpoint tasks, compare Project paths, compare task cwd or scope path against registry path, and include the mapping in handoff context.
+
+A repo-root Codex Project is the preferred durable home for each registered app. A touchpoint task is the working conversation inside that Project. StewAIrd's registry should not treat a parent workspace Project as equivalent to a repo-root Project unless the human explicitly wants that temporary route.
+
+`scopePath` exists for parent-workspace Codex tasks. If Codex exposes `C:\...\git` as a saved project but not a specific repository folder, a task may run from the parent workspace while its prompt and registry metadata bind it to one target repository. This is acceptable only when the scope path exactly matches the registry path, but it is not the preferred durable mapping. Parent-workspace tasks add visual clutter to the `git` project and should be explicit, temporary exceptions rather than an automatic fallback.
+
+Campaign handoff prompts include a route guard before the work instructions. The guard repeats the repository scope, saved Codex Project, mapped touchpoint task, task cwd, optional scope path, and the stop condition if the Project or task route does not match. This makes each dispatch self-contained enough to survive task-title drift, parent-workspace cwd, and stale human memory.
 
 StewAIrd does not own Codex task execution. The CLI command `node src/cli.mjs threads` and generated `output/codex-task-map.md` are preflight reports for Codex, not a background dispatcher. Actual messaging to repo tasks happens through Codex app tooling when the human or this Codex session chooses to dispatch work.
+
+For repositories missing saved Codex Projects or touchpoint tasks, StewAIrd should not silently create parent-workspace tasks just to make the route map complete. Safer choices are: report the unmapped repos, ask for explicit task creation, create or use saved repo-specific Codex Projects when available, or perform bounded current-thread inspection/validation without creating sidebar tasks.
 
 ## Invariants
 
@@ -140,8 +149,9 @@ StewAIrd does not own Codex task execution. The CLI command `node src/cli.mjs th
 - Missing documents are reported, not invented.
 - Dirty working trees are inspected and preserved, not reset or cleaned.
 - Campaign handoff context is ephemeral run context, not execution proof.
-- Codex thread metadata is routing compatibility data only; absence means unmapped, not unmanaged.
-- Codex task-map reports are routing preflights, not proof that a task has been messaged or completed work.
+- Codex Project and thread metadata is routing compatibility data only; absence means unmapped, not unmanaged.
+- Codex route-map reports are routing preflights, not proof that a task has been messaged or completed work.
+- Every Codex handoff prompt must carry its repository scope, Project/task route, and route guard; do not rely on the receiving task's title or prior chat memory.
 - Shallow content signals are audit pointers, not findings.
 - Run records are operational history, not canonical downstream project truth.
 - Dependency order is explicit and readable.

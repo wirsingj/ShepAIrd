@@ -28,8 +28,11 @@ guidance:
   - Treat Plan-mode campaign lenses such as security, performance, bugs, architecture, readability, release readiness, test coverage, docs drift, and YAIML compliance as ephemeral handoff-context builders; do not store campaign packet files.
   - Treat campaign Apply as dispatch-only unless a real handoff dispatcher is configured; dispatched does not mean downstream audit work is complete.
   - Do not build broad local audit or fix engines into StewAIrd; repository-specific reasoning belongs in Codex repo context, with StewAIrd providing routing, prompts, validation, and tiny support utilities.
-  - Treat optional registry codexThread metadata as routing compatibility only; do not infer or auto-write ambiguous task IDs.
-  - Use the Codex task map as a routing preflight before dispatching work to repo tasks; it is not proof of task execution.
+  - Treat optional registry codexProject and codexThread metadata as routing compatibility only; do not infer or auto-write ambiguous Project or task IDs.
+  - Prefer repo-root Codex Projects as durable homes for registered repos; treat touchpoint tasks as working conversations inside those Projects.
+  - Use codexThread.scopePath only when a parent-workspace Codex task is intentionally scoped to one registered repository; do not auto-create parent-workspace tasks just to complete the map.
+  - Every Codex handoff prompt must include a Routing guard that restates repository scope and task route assumptions.
+  - Use the Codex route map as a routing preflight before dispatching work to repo tasks; it is not proof of task execution.
   - Treat resume as a conservative run-record helper: skip previous matching completed/dispatched repos only.
   - Keep CLI help current when campaign handoff, resume, validation, or output behavior changes.
   - Treat shallow docs/YAIML content signals as audit pointers, not findings.

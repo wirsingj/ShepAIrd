@@ -95,20 +95,28 @@ Each portfolio run compares selected repositories with the most recent prior run
 
 To resume a matching interrupted run, include `resume` in the command text or call `runPortfolioCommand` with `resume: true`. Resume skips only repositories previously marked `completed` or `dispatched`; it does not skip `planned`, `blocked`, or `failed` entries.
 
-Registry entries may include optional `codexThread` metadata when a stable repo task is known:
+Registry entries may include optional `codexProject` metadata when a saved repo-root Codex Project is known, plus optional `codexThread` metadata when a stable repo touchpoint task is known:
 
 ```json
 {
+  "codexProject": {
+    "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name",
+    "hostId": "local",
+    "label": "repo-name",
+    "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name",
+    "kind": "local"
+  },
   "codexThread": {
     "threadId": "opaque-codex-thread-id",
     "hostId": "local",
     "title": "Human-readable task title",
-    "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name"
+    "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name",
+    "scopePath": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name"
   }
 }
 ```
 
-Do not infer or auto-write thread IDs from fuzzy task titles. Add this metadata only when the intended repo task is confirmed.
+Do not infer or auto-write Project or thread IDs from fuzzy titles. Add this metadata only when the intended saved Project or repo task is confirmed from Codex app metadata. Omit `scopePath` when the task cwd is already the repository root. Use `scopePath` only for explicit parent-workspace exceptions, and only when it exactly matches the intended registry path. Do not auto-create parent-workspace tasks merely to eliminate an unmapped count.
 
 Before sending portfolio work to existing Codex repo tasks, run:
 
@@ -116,7 +124,17 @@ Before sending portfolio work to existing Codex repo tasks, run:
 npm run threads
 ```
 
-Use the report to confirm mapped/unmapped repositories and task cwd compatibility. A clean task map does not mean the repo task is current; still run portfolio Inspect or Validate when stale worktree state matters.
+Use the report to confirm saved/missing Codex Projects, mapped/unmapped touchpoint tasks, Project path compatibility, task cwd or scope-path compatibility, and setup-needed guidance. A clean route map does not mean the repo task is current; still run portfolio Inspect or Validate when stale worktree state matters.
+
+Treat mapped Codex tasks as soft routes. Before dispatching broad work, confirm:
+
+- `npm run threads` shows zero route mismatches;
+- each durable route uses a repo-root Codex Project when available;
+- parent-workspace tasks have an exact `scopePath`;
+- the handoff prompt includes the Routing guard section;
+- waiting-on-approval or interrupted tasks are followed up before assuming work continues.
+
+If a repo is missing a saved Project or touchpoint task, prefer reporting it cleanly. Create new sidebar tasks only when the human explicitly wants that sidebar home, and prefer creating them inside saved repo-specific Codex Projects rather than the parent `git` Project.
 
 When the question is "did the portfolio still validate after work happened elsewhere?", prefer validation mode before Apply:
 
@@ -149,6 +167,7 @@ Plan-mode campaign lenses are implemented as read-only ephemeral handoff context
 For each selected repository, campaign handoff context includes:
 
 - the inferred lens and why it applies;
+- the Routing guard with repository scope, saved Codex Project, mapped touchpoint task, cwd, and optional scope path;
 - the repository's current Git branch/head/dirty state;
 - YAIML documents to read first;
 - repo-specific audit surfaces from registry evidence, document paths, capabilities, project kind, notes, bounded file inventory, and package scripts;

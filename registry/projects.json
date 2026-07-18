@@ -45,6 +45,13 @@
           "summary": "Defines the YAIML project-memory convention family StewAIrd consumes internally."
         }
       ],
+      "codexProject": {
+        "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\YAIML",
+        "hostId": "local",
+        "label": "YAIML",
+        "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\YAIML",
+        "kind": "local"
+      },
       "codexThread": {
         "threadId": "019f0792-f4a7-7592-b005-acc981214ff4",
         "hostId": "local",
@@ -86,6 +93,13 @@
           "summary": "Ad hoc repo-folder scanning and spaceship-style Token Strip shell."
         }
       ],
+      "codexProject": {
+        "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\StewAIrd",
+        "hostId": "local",
+        "label": "StewAIrd",
+        "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\StewAIrd",
+        "kind": "local"
+      },
       "codexThread": {
         "threadId": "019f5321-110d-7703-b291-1d3faf6bd810",
         "hostId": "local",
@@ -184,6 +198,13 @@
           "summary": "Provider settings/runtime plus structured turn contract and table-owned validation/recovery."
         }
       ],
+      "codexProject": {
+        "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\lorekeeper",
+        "hostId": "local",
+        "label": "LoreKeeper",
+        "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\lorekeeper",
+        "kind": "local"
+      },
       "codexThread": {
         "threadId": "019edf2c-b50d-7fd1-836e-06616422401b",
         "hostId": "local",
@@ -223,6 +244,13 @@
           "summary": "AI providers return explicit patch operations validated before preview/apply/reject."
         }
       ],
+      "codexProject": {
+        "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\SpriteWrite",
+        "hostId": "local",
+        "label": "SpriteWrite",
+        "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\SpriteWrite",
+        "kind": "local"
+      },
       "codexThread": {
         "threadId": "019eded2-191c-7a00-8e36-5e1e4b81501b",
         "hostId": "local",
@@ -263,6 +291,13 @@
           "summary": "Local vision output is converted into structured observations and reviewed actions."
         }
       ],
+      "codexProject": {
+        "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\mAIcroFlow",
+        "hostId": "local",
+        "label": "mAIcroFlow",
+        "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\mAIcroFlow",
+        "kind": "local"
+      },
       "codexThread": {
         "threadId": "019ee1a9-b933-7642-a751-448f88028523",
         "hostId": "local",
@@ -343,6 +378,13 @@
           "summary": "Local-first staged text/media generation with deterministic fallbacks and approval gates."
         }
       ],
+      "codexProject": {
+        "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\ytdoc",
+        "hostId": "local",
+        "label": "ytfictiongen",
+        "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\ytdoc",
+        "kind": "local"
+      },
       "codexThread": {
         "threadId": "019f50a4-047b-76a0-83d0-8ed23a7951dc",
         "hostId": "local",
@@ -461,6 +503,13 @@
           "summary": "Production Chrome/Firefox WebExtension with release packaging, store workflow docs, and mature YAIML project memory."
         }
       ],
+      "codexProject": {
+        "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\ytmmocaptions",
+        "hostId": "local",
+        "label": "ytmmocaptions",
+        "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\ytmmocaptions",
+        "kind": "local"
+      },
       "codexThread": {
         "threadId": "019f0232-8e9f-7cd3-a41f-900aea4c6841",
         "hostId": "local",

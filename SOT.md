@@ -57,10 +57,13 @@ The campaign runner must interpret each lens through each repository's own YAIML
 - Campaign handoff context includes bounded file inventory signals and package-script summaries, so Plan output is grounded in more than registry metadata alone.
 - Docs-drift and YAIML campaign handoff context includes shallow content signals such as declared-document presence/headings, README presence/headings, and possible stale terminology.
 - Campaign Apply has a thin programmatic `handoffDispatcher` hook. When configured by the caller, StewAIrd sends the per-repo prompt/context and records `dispatched` without claiming the downstream audit/fix is complete.
-- Registry entries support optional `codexThread` compatibility metadata (`threadId`, `hostId`, `title`, `cwd`). Status reports show mapped or unmapped Codex tasks, and campaign handoffs carry the metadata for dispatchers.
-- `node src/cli.mjs threads` and `npm run threads` generate a dedicated Codex task map with mapped/unmapped counts, task cwd checks, dirty/clean state, and validation commands.
+- Registry entries support optional `codexProject` metadata (`projectId`, `hostId`, `label`, `path`, `kind`) and `codexThread` touchpoint metadata (`threadId`, `hostId`, `title`, `cwd`). Status reports show saved Codex Project routing, mapped or unmapped touchpoint tasks, and campaign handoffs carry the metadata for dispatchers.
+- `node src/cli.mjs threads` and `npm run threads` generate a dedicated Codex route map with saved Project counts, missing Project counts, mapped/unmapped touchpoint counts, route health, setup-needed guidance, task cwd checks, dirty/clean state, and validation commands.
 - `npm run all` now writes `output/codex-task-map.md` beside the status and capability reports.
-- Confirmed Codex task mappings currently exist for YAIML, StewAIrd, LoreKeeper, SpriteWrite, mAIcroFlow, ytfictiongen/ytdoc, and YTMMOCC. LlamaSaddle, Chaitroom, AIWIKI, OOBHunter, and ooze-tactics remain deliberately unmapped until an exact repo-task mapping is confirmed.
+- Confirmed saved Codex Projects and durable touchpoint task mappings currently exist for YAIML, StewAIrd, LoreKeeper, SpriteWrite, mAIcroFlow, ytfictiongen/ytdoc, and YTMMOCC. LlamaSaddle, Chaitroom, AIWIKI, OOBHunter, and ooze-tactics do not have durable repo-root Codex Projects or touchpoint task mappings yet.
+- Task-route checks now treat parent-workspace task mappings as valid only when `scopePath` matches the registry path and sits inside the task cwd.
+- Campaign handoff prompts include a routing guard that repeats the repository scope, saved Codex Project, mapped touchpoint task, task cwd, optional scope path, and stop condition before repo-specific audit instructions.
+- Parent-workspace tasks created for the unmapped repos were archived after they cluttered the `git` project task list. They are not retained as stable registry mappings.
 - Resume mode skips repositories already marked `completed` or `dispatched` in the previous matching run, while continuing unfinished repositories.
 - CLI help documents the thin command surface, campaign handoff limits, stored-packet deprecation, and resume behavior.
 - Portfolio runs compare each selected repository against the previous run record when one exists, reporting branch, HEAD, dirty-count, YAIML manifest/hash, and validation outcome changes.
@@ -82,8 +85,9 @@ The previous answer reduced StewAIrd to inspection and work packets because that
 - StewAIrd compares current branch/head/dirty state and YAIML manifest hash against the previous portfolio-run snapshot. This is change detection, not yet attribution of which chat or tool caused the change.
 - Dirty worktree isolation is reported through git status; deep diff attribution between pre-existing user work and StewAIrd-created changes is not yet complete.
 - Campaign handoff context is in-run evidence, not a stored artifact and not proof of execution.
-- Campaign handoff context is generated from registry metadata, YAIML metadata, current Git state, bounded file inventory, package-script summaries, Codex task metadata, and shallow docs/YAIML content signals. The programmatic dispatcher hook exists, and the CLI can now report a Codex task map, but CLI/Electron surfaces still do not message actual Codex repo chats. Handoff context still does not perform deep source-content audit or produce findings without Codex doing the audit in the target repo context.
-- Some repository `codexThread` IDs have been written into `registry/projects.json` after exact task `cwd` matches were found. Several repos still have ambiguous or missing historical tasks, so their mappings should remain blank until a stable repo task is confirmed.
+- Campaign handoff context is generated from registry metadata, YAIML metadata, current Git state, bounded file inventory, package-script summaries, Codex Project/task metadata, and shallow docs/YAIML content signals. The programmatic dispatcher hook exists, and the CLI can now report a Codex route map, but CLI/Electron surfaces still do not message actual Codex repo chats. Handoff context still does not perform deep source-content audit or produce findings without Codex doing the audit in the target repo context.
+- Repository `codexProject` and `codexThread` IDs should be written into `registry/projects.json` only after exact routing is confirmed from Codex app project/task metadata. Parent-workspace `scopePath` tasks are technically supported, but they should be treated as explicit temporary exceptions because they clutter the parent project task list and feel fragile.
+- Codex tasks are inherently softer routing than a local process cwd. A task can be renamed, interrupted, waiting on approval, archived, or pointed at a parent workspace. StewAIrd guards path scope, but it still cannot prove live task health from the plain CLI.
 
 ## Default Command Meaning
 
@@ -118,8 +122,8 @@ YAIML
 
 ## Next Five Steps
 
-1. Confirm or create stable Codex repo tasks for currently unmapped registry entries: LlamaSaddle, Chaitroom, AIWIKI, OOBHunter, and ooze-tactics.
-2. Wire the programmatic `handoffDispatcher` hook to Codex app thread routing for mapped repositories.
-3. Improve per-lens handoff prompt quality and context selection without storing campaign packet files.
+1. Add reporting for active/waiting/completed task state when Codex task metadata is available.
+2. Create saved repo-root Codex Projects and one durable touchpoint task for LlamaSaddle, Chaitroom, AIWIKI, OOBHunter, and ooze-tactics only when the human explicitly wants those sidebar homes.
+3. Wire the programmatic `handoffDispatcher` hook to Codex app thread routing for mapped repositories.
 4. Keep the Electron shell and CLI minimal; avoid UI/product work unless it directly improves Codex-driven coordination.
 5. Allow deterministic Apply behavior only for tiny support utilities, not broad audit/fix engines that should run inside Codex repo context.
