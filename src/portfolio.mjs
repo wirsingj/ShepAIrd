@@ -203,7 +203,7 @@ export async function discoverWorkspaceRepos(workspaceRoot) {
         name: entry.name,
         id: slug(entry.name),
         absolutePath,
-        relativePath: path.relative(path.resolve(workspaceRoot, "StewAIrd"), absolutePath) || ".",
+        relativePath: path.relative(path.resolve(workspaceRoot, "ShepAIrd"), absolutePath) || ".",
       });
     }
   }
@@ -373,7 +373,7 @@ export async function processRepository(project, command, options = {}) {
 
 export function buildPortfolioReport(run) {
   const lines = [
-    "# StewAIrd Portfolio Run",
+    "# ShepAIrd Portfolio Run",
     "",
     `Run: ${run.id}`,
     `Mode: ${run.mode}`,
@@ -472,7 +472,7 @@ async function applyOneContinuationStep(project, docset, result) {
   const validation = project.validation ?? [];
   if (!validation.length) {
     result.status = "blocked";
-    result.blockers.push("No validation command is registered, so StewAIrd cannot prove a safe continuation step yet.");
+    result.blockers.push("No validation command is registered, so ShepAIrd cannot prove a safe continuation step yet.");
     return;
   }
   const stateDoc = docset.statusDocuments[0];
@@ -486,7 +486,7 @@ async function applyOneContinuationStep(project, docset, result) {
     command: "continue-yaiml-checklist",
   });
   result.filesChanged.push(stateDoc);
-  result.notes.push("Recorded one bounded StewAIrd continuation note in the repository state document.");
+  result.notes.push("Recorded one bounded ShepAIrd continuation note in the repository state document.");
 }
 
 async function runValidation(project, options = {}) {
@@ -1073,9 +1073,9 @@ async function appendRunNote(filePath, note) {
   const stamp = new Date().toISOString();
   const block = [
     "",
-    "## StewAIrd Run Notes",
+    "## ShepAIrd Run Notes",
     "",
-    `- ${stamp}: StewAIrd executed ${note.command} for ${note.projectName}. Validation outcome is recorded in StewAIrd's run record, not copied here as raw command output.`,
+    `- ${stamp}: ShepAIrd executed ${note.command} for ${note.projectName}. Validation outcome is recorded in ShepAIrd's run record, not copied here as raw command output.`,
     "",
   ].join("\n");
   await fs.writeFile(filePath, raw.replace(/\s*$/, "\n") + block, "utf8");

@@ -13,7 +13,7 @@ Audit date: 2026-07-11
 - `aiwiki`: downstream generated-article app with local, hosted, and demo providers.
 - `ytdoc` / `ytfictiongen`: downstream local media/story generation app.
 
-Other active repositories exist under the root, including game and utility projects. The first StewAIrd registry focuses on AI/provider/control projects requested by the current slice.
+Other active repositories exist under the root, including game and utility projects. The first ShepAIrd registry focuses on AI/provider/control projects requested by the current slice.
 
 ## Dirty Worktree Summary
 

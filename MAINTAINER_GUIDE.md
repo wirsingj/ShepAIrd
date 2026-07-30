@@ -1,27 +1,27 @@
 ---
 yaiml: 0.2
 kind: maintainer
-title: StewAIrd Maintainer Guide
+title: ShepAIrd Maintainer Guide
 purpose: Commands, validation, and safe operating procedure.
 belongs-here: command reference, validation steps, troubleshooting, output locations, executor safety checks.
 not-here: product direction, architecture explanation, downstream implementation detail.
 durability: stable; update when commands, executor behavior, validation, generated outputs, or operating rules change.
 read-with: SOT; Architecture.
 update-when: scripts, portfolio command flow, registry reconciliation, run records, or safety boundaries change.
-agent-guidance: Validate StewAIrd honestly. Preserve downstream user work. Do not overclaim Apply capability.
+agent-guidance: Validate ShepAIrd honestly. Preserve downstream user work. Do not overclaim Apply capability.
 ---
 
-# StewAIrd Maintainer Guide
+# ShepAIrd Maintainer Guide
 
 ## Operator Model
 
-Assume the human usually will not run StewAIrd directly. The normal operator is Codex working in this project folder, using StewAIrd as a thin local instruction router for registered apps.
+Assume the human usually will not run ShepAIrd directly. The normal operator is Codex working in this project folder, using ShepAIrd as a thin local instruction router for registered apps.
 
 Keep command surfaces boring and scriptable. Prefer generated evidence, handoff prompts, run records, validation commands, and clear block conditions over richer app UI, stored packet files, local audit engines, or autonomous behavior.
 
 ## Commands
 
-Run from the StewAIrd repository root:
+Run from the ShepAIrd repository root:
 
 ```powershell
 npm install
@@ -83,7 +83,7 @@ Campaign handoff context is not stored as packet files. Run records are operatio
 
 ## Cross-Chat Resilience
 
-Assume any managed repository may have changed in its own Codex chat since the last StewAIrd run. Start with portfolio Inspect when scope is unclear:
+Assume any managed repository may have changed in its own Codex chat since the last ShepAIrd run. Start with portfolio Inspect when scope is unclear:
 
 ```powershell
 node src/cli.mjs portfolio inspect "Check current registry state after external repo work"
@@ -148,7 +148,7 @@ For multi-package repositories, keep registry validation entries tied to their a
 { "command": "npm run build", "cwd": "frontend" }
 ```
 
-Manual or engine-dependent checks may be recorded with `"kind": "manual"` when StewAIrd should acknowledge them without trying to execute placeholder prose as a shell command.
+Manual or engine-dependent checks may be recorded with `"kind": "manual"` when ShepAIrd should acknowledge them without trying to execute placeholder prose as a shell command.
 
 ## Campaign Lenses
 
@@ -176,15 +176,15 @@ For each selected repository, campaign handoff context includes:
 - when to update YAIML;
 - when to block for human judgment.
 
-Do not implement broad Apply behavior for a lens inside StewAIrd. A lens should normally become a Codex handoff to the target repo context. Deterministic local Apply behavior is appropriate only for tiny support utilities such as validation, manifest cleanup, or run-note maintenance.
+Do not implement broad Apply behavior for a lens inside ShepAIrd. A lens should normally become a Codex handoff to the target repo context. Deterministic local Apply behavior is appropriate only for tiny support utilities such as validation, manifest cleanup, or run-note maintenance.
 
-Campaign Apply accepts a programmatic `handoffDispatcher` hook. In tests this proves the thin dispatch contract without tying StewAIrd's core to the Codex app. Without that hook, CLI campaign Apply blocks and records the prepared handoff prompt/context.
+Campaign Apply accepts a programmatic `handoffDispatcher` hook. In tests this proves the thin dispatch contract without tying ShepAIrd's core to the Codex app. Without that hook, CLI campaign Apply blocks and records the prepared handoff prompt/context.
 
 Docs-drift and YAIML campaign handoff context also includes shallow content signals: declared YAIML document presence/headings, README presence/headings, and possible stale terminology. Treat these as pointers for Codex inspection, not as completed findings.
 
 Current limitation: campaign handoff context inspects bounded file inventories, package scripts, and shallow docs/YAIML signals, but CLI/Electron do not yet locate/message repo-specific Codex chats, inspect source contents deeply, or produce findings by themselves. The next useful improvement is a thin Codex app thread adapter.
 
-When a campaign needs reasoning or implementation beyond deterministic local edits, prefer sending precise Codex handoff context rather than expanding StewAIrd into a general-purpose agent or writing packet files.
+When a campaign needs reasoning or implementation beyond deterministic local edits, prefer sending precise Codex handoff context rather than expanding ShepAIrd into a general-purpose agent or writing packet files.
 
 ## Apply Safety
 
@@ -204,7 +204,7 @@ Additional explicit permission is still required for:
 
 The direct executor blocks validation commands that attempt `git commit`, `git push`, `git reset`, `git clean`, `git checkout`, deploy, publish, or release operations.
 
-Dirty worktrees are not automatic blockers. Inspect the changes and proceed only when StewAIrd's work can be isolated safely.
+Dirty worktrees are not automatic blockers. Inspect the changes and proceed only when ShepAIrd's work can be isolated safely.
 
 ## Validation Checklist
 

@@ -1,11 +1,11 @@
 {
-  "schema": "stewaird.registry.v0",
+  "schema": "shepaird.registry.v0",
   "workspaceRoot": "..",
   "managedPolicy": "apply commands target active projects with managed true; discovered repositories are inspect-only until added or explicitly included",
   "generatedFrom": "Manual audit plus workspace reconciliation of C:/Users/wirsi/OneDrive/Desktop/git on 2026-07-15",
   "dependencyOrder": [
     "yaiml",
-    "stewaird",
+    "shepaird",
     "llamasaddle",
     "chaitroom",
     "lorekeeper",
@@ -42,7 +42,7 @@
           "capability": "yaiml-project-memory",
           "role": "producer",
           "paths": ["yaiml.yml", "docs/SoTY.md", "docs/ARCHITECTURE.md", "docs/MAINTAINER_GUIDE.md"],
-          "summary": "Defines the YAIML project-memory convention family StewAIrd consumes internally."
+          "summary": "Defines the YAIML project-memory convention family ShepAIrd consumes internally."
         }
       ],
       "codexProject": {
@@ -61,9 +61,9 @@
       "notes": "Governing YAIML project. Re-read before processing dependent repositories."
     },
     {
-      "id": "stewaird",
-      "name": "StewAIrd",
-      "kind": "personal-meta-coordination-layer",
+      "id": "shepaird",
+      "name": "ShepAIrd",
+      "kind": "personal-repo-shepherding-layer",
       "path": ".",
       "managed": true,
       "lifecycle": "active",
@@ -94,19 +94,19 @@
         }
       ],
       "codexProject": {
-        "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\StewAIrd",
+        "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\ShepAIrd",
         "hostId": "local",
-        "label": "StewAIrd",
-        "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\StewAIrd",
+        "label": "ShepAIrd",
+        "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\ShepAIrd",
         "kind": "local"
       },
       "codexThread": {
         "threadId": "019f5321-110d-7703-b291-1d3faf6bd810",
         "hostId": "local",
         "title": "Verify repo rename",
-        "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\StewAIrd"
+        "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\ShepAIrd"
       },
-      "notes": "Private human-controlled meta-project for project status, capability mapping, and thin Codex handoff context."
+      "notes": "Private human-guided repo shepherd for project status, capability mapping, and thin Codex handoff context."
     },
     {
       "id": "llamasaddle",

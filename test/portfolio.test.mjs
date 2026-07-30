@@ -99,7 +99,7 @@ test("apply mode invokes the direct executor, runs validation, updates YAIML sta
   assert.ok(run.repositories[0].validation.some((item) => item.cwd === "checks"));
   assert.ok(run.repositories[0].validation.some((item) => item.command === "git push" && item.status === "blocked"));
   assert.match(await readFile(path.join(repo, "validated.txt"), "utf8"), /ok/);
-  assert.match(await readFile(path.join(repo, "SOT.md"), "utf8"), /StewAIrd Run Notes/);
+  assert.match(await readFile(path.join(repo, "SOT.md"), "utf8"), /ShepAIrd Run Notes/);
   assert.match(await readFile(path.join(fixture.root, "runs", `${run.id}.json`), "utf8"), /direct-filesystem-command-executor/);
 });
 
@@ -450,7 +450,7 @@ test("blocked dependencies are isolated and downstream dependents are skipped", 
 });
 
 async function makeFixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), "stewaird-portfolio-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-portfolio-"));
   await mkdir(path.join(root, "registry"), { recursive: true });
   const registryPath = path.join(root, "registry", "projects.json");
   t.diagnostic(root);
@@ -483,7 +483,7 @@ async function writeYaiml(root, statePath) {
 
 async function writeRegistry(fixture, projects, dependencyOrder) {
   await writeFile(fixture.registryPath, JSON.stringify({
-    schema: "stewaird.registry.v0",
+    schema: "shepaird.registry.v0",
     workspaceRoot: ".",
     dependencyOrder,
     projects,

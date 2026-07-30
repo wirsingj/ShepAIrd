@@ -19,13 +19,13 @@ let selectedId = "";
 render();
 
 selectButton.addEventListener("click", async () => {
-  const paths = await window.stewaird.selectFolders();
+  const paths = await window.shepaird.selectFolders();
   await scan(paths);
 });
 
 workspaceButton.addEventListener("click", async () => {
   scanCount.textContent = "Locating workspace fleet...";
-  const paths = await window.stewaird.workspaceFolders();
+  const paths = await window.shepaird.workspaceFolders();
   await scan(paths);
 });
 
@@ -71,7 +71,7 @@ async function scan(paths) {
     return;
   }
   scanCount.textContent = `Scanning ${paths.length} folder${paths.length === 1 ? "" : "s"}...`;
-  currentScan = await window.stewaird.scanFolders(paths);
+  currentScan = await window.shepaird.scanFolders(paths);
   selectedId = currentScan.projects[0]?.id ?? "";
   render();
 }
@@ -84,7 +84,7 @@ async function runPortfolio(mode) {
   }
   commandOutput.textContent = `Running ${mode} command...`;
   try {
-    const run = await window.stewaird.runPortfolioCommand(text, { mode });
+    const run = await window.shepaird.runPortfolioCommand(text, { mode });
     commandOutput.textContent = summarizeRun(run);
   } catch (error) {
     commandOutput.textContent = error?.message ?? String(error);

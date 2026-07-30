@@ -10,7 +10,7 @@ import { scanFolders } from "../src/intake.mjs";
 const execFileAsync = promisify(execFile);
 
 test("detects YAIML-aware repo, docs, capabilities, and aggregate counts", async () => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "stewaird-intake-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-intake-"));
   const repo = path.join(root, "tool");
   const plain = path.join(root, "plain");
   await mkdir(path.join(repo, "docs"), { recursive: true });
@@ -48,7 +48,7 @@ test("detects YAIML-aware repo, docs, capabilities, and aggregate counts", async
 });
 
 test("detects git dirty state without modifying repo files", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "stewaird-dirty-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-dirty-"));
   await writeFile(path.join(root, "yaiml.yml"), "yaiml: 0.2\nproject: Dirty Repo\n");
   await writeFile(path.join(root, "SOT.md"), "# Dirty State\n");
 

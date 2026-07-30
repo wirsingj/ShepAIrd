@@ -10,7 +10,7 @@ export async function loadRegistry(registryPath = defaultRegistryPath()) {
   const absoluteRegistryPath = path.resolve(registryPath);
   const raw = await fs.readFile(absoluteRegistryPath, "utf8");
   const registry = JSON.parse(raw);
-  if (registry.schema !== "stewaird.registry.v0") {
+  if (registry.schema !== "shepaird.registry.v0") {
     throw new Error(`Unsupported registry schema: ${registry.schema}`);
   }
   if (!Array.isArray(registry.projects)) {
@@ -80,7 +80,7 @@ export async function inspectProject(project) {
 
 export function buildStatusReport(inspected) {
   const lines = [
-    "# StewAIrd Consolidated Status",
+    "# ShepAIrd Consolidated Status",
     "",
     `Generated: ${new Date().toISOString()}`,
     "",
@@ -145,7 +145,7 @@ export function buildCapabilityMap(inspected) {
   const sorted = [...capabilities.values()].sort((a, b) => a.id.localeCompare(b.id));
   const shared = sorted.filter((capability) => (capability.consumers.length + capability.producers.length) > 1);
   const lines = [
-    "# StewAIrd Capability Map",
+    "# ShepAIrd Capability Map",
     "",
     `Generated: ${new Date().toISOString()}`,
     "",
@@ -183,7 +183,7 @@ export function buildCodexTaskMap(inspected) {
   const setupNeeded = projects.filter((project) => codexRouteHealth(project).status !== "ready");
 
   const lines = [
-    "# StewAIrd Codex Route Map",
+    "# ShepAIrd Codex Route Map",
     "",
     `Generated: ${new Date().toISOString()}`,
     "",
@@ -315,7 +315,7 @@ export function buildCodexTaskMap(inspected) {
   }
 
   lines.push("## Dispatch Rule", "");
-  lines.push("StewAIrd should hand reasoning-heavy work to touchpoint tasks inside repo-root Codex Projects, one repository at a time or with explicit bounded concurrency. If a registered repo has no saved Codex Project, report it as needing setup instead of silently creating a task under the parent git workspace. The CLI does not message Codex tasks directly; Codex app tooling performs the actual send using this routing evidence.");
+  lines.push("ShepAIrd should hand reasoning-heavy work to touchpoint tasks inside repo-root Codex Projects, one repository at a time or with explicit bounded concurrency. If a registered repo has no saved Codex Project, report it as needing setup instead of silently creating a task under the parent git workspace. The CLI does not message Codex tasks directly; Codex app tooling performs the actual send using this routing evidence.");
 
   return lines.join("\n");
 }

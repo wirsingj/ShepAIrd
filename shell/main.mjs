@@ -15,7 +15,7 @@ async function createWindow() {
     height: 760,
     minWidth: 860,
     minHeight: 560,
-    title: "StewAIrd Intake",
+    title: "ShepAIrd Intake",
     backgroundColor: "#111315",
     webPreferences: {
       preload: path.join(shellDir, "preload.cjs"),

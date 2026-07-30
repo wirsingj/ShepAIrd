@@ -1,18 +1,18 @@
 yaiml: 0.2
 project:
-  id: stewaird
-  name: StewAIrd
+  id: shepaird
+  name: ShepAIrd
 role: private-portfolio-command-hub-memory-index
 documents:
   sot:
     path: SOT.md
-    title: StewAIrd State Of The Project
+    title: ShepAIrd State Of The Project
   architecture:
     path: ARCHITECTURE.md
-    title: StewAIrd Architecture
+    title: ShepAIrd Architecture
   maintainer:
     path: MAINTAINER_GUIDE.md
-    title: StewAIrd Maintainer Guide
+    title: ShepAIrd Maintainer Guide
 registry:
   projects: registry/projects.json
 generated:
@@ -22,12 +22,12 @@ generated:
   - output/runs/
 guidance:
   - Re-read YAIML before changing dependency interpretation.
-  - Treat StewAIrd as the human's thin local Codex instruction router for managed repositories, not a model-replacement app.
+  - Treat ShepAIrd as the human's thin local Codex instruction router for managed repositories, not a model-replacement app.
   - Assume the normal operator is Codex working in this project folder; keep interfaces scriptable and evidence-oriented.
   - Use YAIML internally to separate state, architecture, maintainer workflow, evidence, and agent constraints.
   - Treat Plan-mode campaign lenses such as security, performance, bugs, architecture, readability, release readiness, test coverage, docs drift, and YAIML compliance as ephemeral handoff-context builders; do not store campaign packet files.
   - Treat campaign Apply as dispatch-only unless a real handoff dispatcher is configured; dispatched does not mean downstream audit work is complete.
-  - Do not build broad local audit or fix engines into StewAIrd; repository-specific reasoning belongs in Codex repo context, with StewAIrd providing routing, prompts, validation, and tiny support utilities.
+  - Do not build broad local audit or fix engines into ShepAIrd; repository-specific reasoning belongs in Codex repo context, with ShepAIrd providing routing, prompts, validation, and tiny support utilities.
   - Treat optional registry codexProject and codexThread metadata as routing compatibility only; do not infer or auto-write ambiguous Project or task IDs.
   - Prefer repo-root Codex Projects as durable homes for registered repos; treat touchpoint tasks as working conversations inside those Projects.
   - Use codexThread.scopePath only when a parent-workspace Codex task is intentionally scoped to one registered repository; do not auto-create parent-workspace tasks just to complete the map.

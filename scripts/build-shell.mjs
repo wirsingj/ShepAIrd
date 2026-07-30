@@ -60,4 +60,4 @@ if (!makeSummaryChips(mockScan).some((chip) => chip.includes("YAIML-aware"))) {
   throw new Error("Summary chip smoke failed.");
 }
 
-console.log("StewAIrd thin intake shell build check passed.");
+console.log("ShepAIrd thin intake shell build check passed.");

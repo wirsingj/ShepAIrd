@@ -1,9 +1,9 @@
 {
-  "name": "stewaird",
+  "name": "shepaird",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Human-controlled coordination layer for related AI projects.",
+  "description": "Human-guided shepherding layer for related Codex projects.",
   "scripts": {
     "build": "node scripts/build-shell.mjs",
     "shell": "electron shell/main.mjs",

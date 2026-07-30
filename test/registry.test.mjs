@@ -24,7 +24,7 @@ test("orders projects by declared dependency order", async () => {
 });
 
 test("inspects registry documents and reports capabilities", async () => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "stewaird-registry-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-registry-"));
   await mkdir(path.join(root, "registry"), { recursive: true });
   await mkdir(path.join(root, "standard"), { recursive: true });
   await mkdir(path.join(root, "consumer"), { recursive: true });
@@ -33,7 +33,7 @@ test("inspects registry documents and reports capabilities", async () => {
 
   const registryPath = path.join(root, "registry", "projects.json");
   await writeFile(registryPath, JSON.stringify({
-    schema: "stewaird.registry.v0",
+    schema: "shepaird.registry.v0",
     dependencyOrder: ["standard", "consumer"],
     projects: [
       {
@@ -107,7 +107,7 @@ test("inspects registry documents and reports capabilities", async () => {
   assert.match(capabilityMap, /Consumers: consumer/);
 
   const codexTaskMap = buildCodexTaskMap(inspected);
-  assert.match(codexTaskMap, /StewAIrd Codex Route Map/);
+  assert.match(codexTaskMap, /ShepAIrd Codex Route Map/);
   assert.match(codexTaskMap, /Codex Projects mapped: 1/);
   assert.match(codexTaskMap, /Codex Projects missing: 1/);
   assert.match(codexTaskMap, /Mapped tasks: 1/);
@@ -124,14 +124,14 @@ test("inspects registry documents and reports capabilities", async () => {
 });
 
 test("codex task map supports parent-workspace tasks scoped to a repository path", async () => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "stewaird-thread-scope-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-thread-scope-"));
   await mkdir(path.join(root, "registry"), { recursive: true });
   await mkdir(path.join(root, "parent", "scoped"), { recursive: true });
   await writeFile(path.join(root, "parent", "scoped", "SOT.md"), "# Scoped State\n");
 
   const registryPath = path.join(root, "registry", "projects.json");
   await writeFile(registryPath, JSON.stringify({
-    schema: "stewaird.registry.v0",
+    schema: "shepaird.registry.v0",
     projects: [
       {
         id: "scoped",
@@ -175,14 +175,14 @@ test("codex task map supports parent-workspace tasks scoped to a repository path
 });
 
 test("codex task map flags scoped tasks outside their task cwd", async () => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "stewaird-thread-mismatch-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-thread-mismatch-"));
   await mkdir(path.join(root, "registry"), { recursive: true });
   await mkdir(path.join(root, "parent", "scoped"), { recursive: true });
   await writeFile(path.join(root, "parent", "scoped", "SOT.md"), "# Scoped State\n");
 
   const registryPath = path.join(root, "registry", "projects.json");
   await writeFile(registryPath, JSON.stringify({
-    schema: "stewaird.registry.v0",
+    schema: "shepaird.registry.v0",
     projects: [
       {
         id: "scoped",
@@ -222,14 +222,14 @@ test("codex task map flags scoped tasks outside their task cwd", async () => {
 });
 
 test("codex route map separates saved projects from touchpoint tasks", async () => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "stewaird-project-route-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-project-route-"));
   await mkdir(path.join(root, "registry"), { recursive: true });
   await mkdir(path.join(root, "project-only"), { recursive: true });
   await writeFile(path.join(root, "project-only", "SOT.md"), "# Project Only\n");
 
   const registryPath = path.join(root, "registry", "projects.json");
   await writeFile(registryPath, JSON.stringify({
-    schema: "stewaird.registry.v0",
+    schema: "shepaird.registry.v0",
     projects: [
       {
         id: "project-only",

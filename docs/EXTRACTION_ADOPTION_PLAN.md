@@ -22,7 +22,7 @@ Create a shared written contract first:
 
 ## Phase 3: Pilot
 
-Pick one consumer project and run a bounded Apply command or a separately approved repository-local task. StewAIrd may prepare ephemeral Codex handoff context, but that context is not execution proof by itself.
+Pick one consumer project and run a bounded Apply command or a separately approved repository-local task. ShepAIrd may prepare ephemeral Codex handoff context, but that context is not execution proof by itself.
 
 ## Phase 4: Extract Or Do Not
 

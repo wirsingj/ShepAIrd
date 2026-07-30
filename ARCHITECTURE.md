@@ -1,33 +1,33 @@
 ---
 yaiml: 0.2
 kind: architecture
-title: StewAIrd Architecture
+title: ShepAIrd Architecture
 purpose: Durable system shape, boundaries, data model, executor model, and invariants.
 belongs-here: components, registry model, portfolio command flow, execution boundaries, data flow, danger zones.
 not-here: volatile roadmap, command reference, full audit history.
 durability: stable; update when registry shape, command flow, executor capability, or safety boundaries change.
 read-with: SOT; Maintainer Guide; registry/projects.json.
 update-when: registry semantics, workspace reconciliation, CLI/app responsibilities, run records, or executor boundaries change.
-agent-guidance: Keep StewAIrd request-driven, repository-specific, and honest about executor limits.
+agent-guidance: Keep ShepAIrd request-driven, repository-specific, and honest about executor limits.
 ---
 
-# StewAIrd Architecture
+# ShepAIrd Architecture
 
 ## Boundary
 
-StewAIrd is a private, thin Codex instruction router for the human's managed repositories under the configured Git workspace. It is request-driven, not a background daemon, and not a model-replacement product.
+ShepAIrd is a private, thin Codex instruction router for the human's managed repositories under the configured Git workspace. It is request-driven, not a background daemon, and not a model-replacement product.
 
 Its core job is to give Codex a small deterministic local substrate for one human portfolio command: resolve scope, gather evidence, prepare ephemeral repo-specific handoff context, run registered validation, perform only tiny bounded support edits when explicitly implemented, and preserve each repository's own YAIML documents as the canonical project truth.
 
-StewAIrd is intentionally cross-chat tolerant: it must expect each managed repository may be changed, committed, validated, or partially dirtied by a separate Codex chat. The registry is routing policy, not a frozen mirror of repo truth; current Git and YAIML state must be read from disk every run.
+ShepAIrd is intentionally cross-chat tolerant: it must expect each managed repository may be changed, committed, validated, or partially dirtied by a separate Codex chat. The registry is routing policy, not a frozen mirror of repo truth; current Git and YAIML state must be read from disk every run.
 
-StewAIrd should also become a campaign translator for recurring Codex audit passes. A campaign lens is a human intent such as security, performance, bug check, architecture, readability, release readiness, test coverage, docs drift, or YAIML compliance. The lens supplies the question; each repository's YAIML and registry evidence supply the local meaning; Codex remains the reasoning and implementation layer for audit findings and product changes.
+ShepAIrd should also become a campaign translator for recurring Codex audit passes. A campaign lens is a human intent such as security, performance, bug check, architecture, readability, release readiness, test coverage, docs drift, or YAIML compliance. The lens supplies the question; each repository's YAIML and registry evidence supply the local meaning; Codex remains the reasoning and implementation layer for audit findings and product changes.
 
-StewAIrd may inspect, plan, dispatch, and, for implemented bounded Apply actions, directly execute filesystem and command work inside managed repositories. Direct execution should stay limited to support utilities such as validation, run notes, and manifest cleanup. It must not commit, push, publish, deploy, release, move repositories, install dependencies/providers, or extract shared packages without separate explicit permission.
+ShepAIrd may inspect, plan, dispatch, and, for implemented bounded Apply actions, directly execute filesystem and command work inside managed repositories. Direct execution should stay limited to support utilities such as validation, run notes, and manifest cleanup. It must not commit, push, publish, deploy, release, move repositories, install dependencies/providers, or extract shared packages without separate explicit permission.
 
 ## Components
 
-- `yaiml.yml`: StewAIrd's own YAIML memory index.
+- `yaiml.yml`: ShepAIrd's own YAIML memory index.
 - `registry/projects.json`: managed-project policy, dependency order, registry paths, capabilities, validation commands, and evidence pointers.
 - `src/registry.mjs`: registry loader, project inspector, status report builder, capability mapper, and Codex Project/task route-map reporter.
 - `src/intake.mjs`: workspace/repo scanner used by the shell.
@@ -97,7 +97,7 @@ The current executor is direct filesystem plus child-process command execution. 
 - registered validation command execution;
 - blocker and validation outcome recording.
 
-It is not a general coding agent and should not grow into one. If the command requires repository-specific implementation work or judgment-heavy audit work, StewAIrd must report a blocker or require a dispatch adapter rather than fabricating success.
+It is not a general coding agent and should not grow into one. If the command requires repository-specific implementation work or judgment-heavy audit work, ShepAIrd must report a blocker or require a dispatch adapter rather than fabricating success.
 
 The dispatch concept should remain thin: tell Codex what to do in the right repo context, not implement a competing agent runtime or persist per-repo packet files. CLI/Electron integration should be a small adapter over Codex app thread routing, not a model layer.
 
@@ -124,22 +124,22 @@ Discovered repositories that are not managed are inspect-only until explicitly i
 
 ## Codex Project And Task Routing
 
-Codex Project and task metadata is a lightweight bridge between StewAIrd's registry and the Codex app's Project/task tools. A mapped repository can record the saved Codex Project's opaque id, host id, label, kind, and local path, plus one durable touchpoint task's opaque task id, host id, human title, task cwd, and optional repository `scopePath`. StewAIrd validates this metadata only as local routing evidence: it can report saved or missing Projects, mapped or missing touchpoint tasks, compare Project paths, compare task cwd or scope path against registry path, and include the mapping in handoff context.
+Codex Project and task metadata is a lightweight bridge between ShepAIrd's registry and the Codex app's Project/task tools. A mapped repository can record the saved Codex Project's opaque id, host id, label, kind, and local path, plus one durable touchpoint task's opaque task id, host id, human title, task cwd, and optional repository `scopePath`. ShepAIrd validates this metadata only as local routing evidence: it can report saved or missing Projects, mapped or missing touchpoint tasks, compare Project paths, compare task cwd or scope path against registry path, and include the mapping in handoff context.
 
-A repo-root Codex Project is the preferred durable home for each registered app. A touchpoint task is the working conversation inside that Project. StewAIrd's registry should not treat a parent workspace Project as equivalent to a repo-root Project unless the human explicitly wants that temporary route.
+A repo-root Codex Project is the preferred durable home for each registered app. A touchpoint task is the working conversation inside that Project. ShepAIrd's registry should not treat a parent workspace Project as equivalent to a repo-root Project unless the human explicitly wants that temporary route.
 
 `scopePath` exists for parent-workspace Codex tasks. If Codex exposes `C:\...\git` as a saved project but not a specific repository folder, a task may run from the parent workspace while its prompt and registry metadata bind it to one target repository. This is acceptable only when the scope path exactly matches the registry path, but it is not the preferred durable mapping. Parent-workspace tasks add visual clutter to the `git` project and should be explicit, temporary exceptions rather than an automatic fallback.
 
 Campaign handoff prompts include a route guard before the work instructions. The guard repeats the repository scope, saved Codex Project, mapped touchpoint task, task cwd, optional scope path, and the stop condition if the Project or task route does not match. This makes each dispatch self-contained enough to survive task-title drift, parent-workspace cwd, and stale human memory.
 
-StewAIrd does not own Codex task execution. The CLI command `node src/cli.mjs threads` and generated `output/codex-task-map.md` are preflight reports for Codex, not a background dispatcher. Actual messaging to repo tasks happens through Codex app tooling when the human or this Codex session chooses to dispatch work.
+ShepAIrd does not own Codex task execution. The CLI command `node src/cli.mjs threads` and generated `output/codex-task-map.md` are preflight reports for Codex, not a background dispatcher. Actual messaging to repo tasks happens through Codex app tooling when the human or this Codex session chooses to dispatch work.
 
-For repositories missing saved Codex Projects or touchpoint tasks, StewAIrd should not silently create parent-workspace tasks just to make the route map complete. Safer choices are: report the unmapped repos, ask for explicit task creation, create or use saved repo-specific Codex Projects when available, or perform bounded current-thread inspection/validation without creating sidebar tasks.
+For repositories missing saved Codex Projects or touchpoint tasks, ShepAIrd should not silently create parent-workspace tasks just to make the route map complete. Safer choices are: report the unmapped repos, ask for explicit task creation, create or use saved repo-specific Codex Projects when available, or perform bounded current-thread inspection/validation without creating sidebar tasks.
 
 ## Invariants
 
-- YAIML remains upstream of StewAIrd's project-memory interpretation.
-- Codex remains the reasoning and coding surface; StewAIrd supplies local evidence, routing, prompts, and validation scaffolding.
+- YAIML remains upstream of ShepAIrd's project-memory interpretation.
+- Codex remains the reasoning and coding surface; ShepAIrd supplies local evidence, routing, prompts, and validation scaffolding.
 - Downstream repositories own their own YAIML truth.
 - Current filesystem, Git, and repository YAIML evidence wins over this chat's memory.
 - One global command may produce different repository-specific work in each target repository.
@@ -156,7 +156,7 @@ For repositories missing saved Codex Projects or touchpoint tasks, StewAIrd shou
 - Run records are operational history, not canonical downstream project truth.
 - Dependency order is explicit and readable.
 - Commit, push, publish, release, deployment, repo moves, dependency installs, and shared-package extraction require separate explicit permission.
-- StewAIrd remains personal unless the human explicitly decides to productize or publish it.
+- ShepAIrd remains personal unless the human explicitly decides to productize or publish it.
 - Thinness is an architectural invariant. Prefer registry metadata, run records, reports, dispatch prompts, and explicit commands over new UI, background services, embedded model logic, packet piles, local audit engines, or broad abstractions.
 
 ## Danger Zones
@@ -170,5 +170,5 @@ For repositories missing saved Codex Projects or touchpoint tasks, StewAIrd shou
 - Assuming this chat knows about changes made in an individual repo chat.
 - Letting the registry become stale enough that global commands target the wrong path.
 - Turning run records into a replacement for downstream YAIML memory.
-- Building a second agent brain inside StewAIrd instead of handing rich context back to Codex.
+- Building a second agent brain inside ShepAIrd instead of handing rich context back to Codex.
 - Reintroducing stored per-repo packet files as the default workflow.

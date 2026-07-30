@@ -1,8 +1,8 @@
-# StewAIrd
+# ShepAIrd
 
-StewAIrd is a private, local command desk for coordinating Codex work across a registered portfolio of repositories.
+ShepAIrd is a private, local shepherding layer for guiding Codex work across a registered portfolio of repositories.
 
-It is intentionally thin. StewAIrd does not try to become a better coding model, a background agent swarm, or a replacement for each repository's own project memory. Its job is to help Codex and the human answer:
+It is intentionally thin. ShepAIrd does not try to become a better coding model, a background agent swarm, or a replacement for each repository's own project memory. Its job is to help Codex and the human answer:
 
 - Which repos are registered?
 - What state are they in right now?
@@ -11,7 +11,7 @@ It is intentionally thin. StewAIrd does not try to become a better coding model,
 - What changed since the last portfolio run?
 - Where should a broad request like "run a bug-risk audit everywhere" be handed off?
 
-The downstream repositories remain the source of truth for their own YAIML documents, code, risks, and validation evidence.
+The downstream repositories remain the source of truth for their own YAIML documents, code, risks, and validation evidence. ShepAIrd keeps track of where they are, what needs attention, and which Codex task should receive the next handoff.
 
 ## What It Does
 
@@ -132,11 +132,11 @@ Generated output is operational evidence. It should not replace downstream YAIML
 - `SOT.md` - current project state.
 - `ARCHITECTURE.md` - durable design and boundaries.
 - `MAINTAINER_GUIDE.md` - operating procedure and validation.
-- `yaiml.yml` - StewAIrd's own YAIML memory index.
+- `yaiml.yml` - ShepAIrd's own YAIML memory index.
 
 ## Safety Boundaries
 
-StewAIrd may inspect registered repositories, run registered validation, generate reports, prepare handoff context, and perform implemented bounded support actions.
+ShepAIrd may inspect registered repositories, run registered validation, generate reports, prepare handoff context, and perform implemented bounded support actions.
 
 Separate explicit permission is required for:
 
@@ -168,4 +168,3 @@ For registry-wide validation:
 ```powershell
 node src/cli.mjs portfolio validate "Validate all managed projects"
 ```
-

@@ -1,6 +1,6 @@
 export function buildCliHelp() {
   return [
-    "StewAIrd",
+    "ShepAIrd",
     "",
     "Usage:",
     "  node src/cli.mjs status",
