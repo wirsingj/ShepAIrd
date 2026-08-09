@@ -13,7 +13,7 @@ agent-guidance: Preserve human control. Do not describe aspirational execution a
 
 # ShepAIrd State Of The Project
 
-Updated: 2026-07-15
+Updated: 2026-08-08
 
 ## Identity
 
@@ -37,6 +37,7 @@ The campaign runner must interpret each lens through each repository's own YAIML
 - Registry reconciliation reports managed, missing, possible moved, discovered, excluded, inactive, and archived repository states.
 - YAIML discovery reads `yaiml.yml` first and treats `arcs.yml` as a temporary ARCS-era cleanup signal.
 - Repository-specific document paths are read from each repository's YAIML manifest rather than hardcoding a SoT path.
+- YAIML discovery supports both the older flat `documents.*.path` shape and the current nested `yaiml.core` / `yaiml.supporting` discovery shape used by the governing YAIML repository.
 - Portfolio Inspect reports each repository's current Git branch, short HEAD, and clean/dirty state so external repo-chat changes are visible on the next run.
 - Registry validation commands can run from project subdirectories, which makes multi-package repositories such as Go-backend plus Vite-frontend apps validate from their real package roots.
 - The CLI supports portfolio commands: `node src/cli.mjs portfolio inspect|plan|validate|apply "..."`.
@@ -51,7 +52,7 @@ The campaign runner must interpret each lens through each repository's own YAIML
   - run records under `output/runs/`.
 - Apply mode blocks dangerous validation commands such as `git commit`, `git push`, `git reset`, `git clean`, deploy, publish, and release commands.
 - Dependency ordering is respected, and downstream repositories are skipped when an upstream dependency blocks.
-- Tests cover workspace discovery, registry reconciliation, YAIML and temporary ARCS discovery, Inspect/Plan/Apply interpretation, one-step and N-step command parsing, actual executor invocation, run recording, validation safety, dependency blocker isolation, and temporary ARCS cleanup.
+- Tests cover workspace discovery, registry reconciliation, legacy and current nested YAIML discovery, temporary ARCS discovery, Inspect/Plan/Apply interpretation, one-step and N-step command parsing, actual executor invocation, run recording, validation safety, dependency blocker isolation, and temporary ARCS cleanup.
 - Plan-mode campaign lenses are implemented for security, performance, bug-check/code-pattern review, architecture, readability, release readiness, test coverage, docs drift, and YAIML compliance.
 - Campaign Plan builds ephemeral per-repository Codex handoff context. It no longer writes stored campaign packet files.
 - Campaign handoff context includes bounded file inventory signals and package-script summaries, so Plan output is grounded in more than registry metadata alone.

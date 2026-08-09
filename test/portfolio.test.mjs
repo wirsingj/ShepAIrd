@@ -8,6 +8,7 @@ import test from "node:test";
 import {
   discoverWorkspaceRepos,
   interpretPortfolioCommand,
+  readYaimlDocset,
   reconcileWorkspace,
   runPortfolioCommand,
 } from "../src/portfolio.mjs";
@@ -69,6 +70,31 @@ test("interprets inspect, plan, apply, default one-step, and explicit N-step com
   assert.deepEqual(apply.targetIds, ["lorekeeper", "spritewrite"]);
   assert.equal(interpretPortfolioCommand("continue through the YAIML checklist").stepLimit, 1);
   assert.equal(interpretPortfolioCommand("Check all YAIML states and continue working through issues").mode, "apply");
+});
+
+test("reads current nested YAIML discovery documents", async (t) => {
+  const fixture = await makeFixture(t);
+  const repo = path.join(fixture.root, "nested");
+  await makeRepo(repo);
+  await mkdir(path.join(repo, "docs"), { recursive: true });
+  await writeFile(path.join(repo, "yaiml.yml"), [
+    "yaiml:",
+    "  version: \"0.2.0\"",
+    "  core:",
+    "    state: docs/SoTY.md",
+    "    architecture: docs/ARCHITECTURE.md",
+    "    maintainer_guide: docs/MAINTAINER_GUIDE.md",
+    "  supporting:",
+    "    context_loading: docs/CONTEXT_LOADING.md",
+    "",
+  ].join("\n"));
+
+  const docset = await readYaimlDocset(repo);
+
+  assert.deepEqual(docset.statusDocuments, ["docs/SoTY.md"]);
+  assert.deepEqual(docset.architectureDocuments, ["docs/ARCHITECTURE.md"]);
+  assert.deepEqual(docset.maintainerDocuments, ["docs/MAINTAINER_GUIDE.md"]);
+  assert.deepEqual(docset.supportingDocuments, ["docs/CONTEXT_LOADING.md"]);
 });
 
 test("apply mode invokes the direct executor, runs validation, updates YAIML state, and records a run", async (t) => {

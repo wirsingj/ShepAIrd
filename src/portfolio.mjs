@@ -1038,8 +1038,30 @@ function parseManifestDocuments(raw) {
       docs[group].push(match[2].trim());
     }
   }
+  const coreMap = {
+    state: "statusDocuments",
+    sot: "statusDocuments",
+    status: "statusDocuments",
+    architecture: "architectureDocuments",
+    maintainer: "maintainerDocuments",
+    maintainer_guide: "maintainerDocuments",
+  };
+  const coreBlock = raw.match(/^\s{2}core:\s*\r?\n((?:\s{4}[^\r\n]*\r?\n?)*)/m)?.[1] ?? "";
+  for (const match of coreBlock.matchAll(/^\s{4}([a-zA-Z0-9_-]+):\s*["']?([^"'\r\n]+)["']?\s*$/gm)) {
+    const group = coreMap[match[1].toLowerCase()];
+    if (group) {
+      docs[group].push(match[2].trim());
+    }
+  }
   for (const match of raw.matchAll(/^\s*-\s+path:\s*["']?([^"'\r\n]+)["']?\s*$/gm)) {
     docs.supportingDocuments.push(match[1].trim());
+  }
+  const supportingBlock = raw.match(/^\s{2}supporting:\s*\r?\n((?:\s{4}[^\r\n]*\r?\n?)*)/m)?.[1] ?? "";
+  for (const match of supportingBlock.matchAll(/^\s{4}[a-zA-Z0-9_-]+:\s*["']?([^"'\r\n]+)["']?\s*$/gm)) {
+    docs.supportingDocuments.push(match[1].trim());
+  }
+  for (const key of Object.keys(docs)) {
+    docs[key] = unique(docs[key]);
   }
   return docs;
 }

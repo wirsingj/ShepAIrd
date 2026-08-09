@@ -47,6 +47,34 @@ test("detects YAIML-aware repo, docs, capabilities, and aggregate counts", async
   assert.ok(plainToken.warnings.some((warning) => /No YAIML/.test(warning)));
 });
 
+test("detects current nested YAIML core documents", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-intake-nested-"));
+  const repo = path.join(root, "nested");
+  await mkdir(path.join(repo, "docs"), { recursive: true });
+  await writeFile(path.join(repo, "yaiml.yml"), [
+    "yaiml:",
+    "  version: \"0.2.0\"",
+    "  core:",
+    "    state: docs/SoTY.md",
+    "    architecture: docs/ARCHITECTURE.md",
+    "    maintainer_guide: docs/MAINTAINER_GUIDE.md",
+    "",
+  ].join("\n"));
+  await writeFile(path.join(repo, "docs", "SoTY.md"), "# Nested State\n");
+  await writeFile(path.join(repo, "docs", "ARCHITECTURE.md"), "# Nested Architecture\n");
+  await writeFile(path.join(repo, "docs", "MAINTAINER_GUIDE.md"), "# Nested Maintainer Guide\n");
+  await writeFile(path.join(repo, "package.json"), JSON.stringify({ name: "nested-tool" }));
+
+  const scan = await scanFolders([repo]);
+  const nested = scan.projects[0];
+
+  assert.equal(nested.isYaimlAware, true);
+  assert.equal(nested.statusDocs.some((doc) => doc.path === "docs/SoTY.md" && doc.exists), true);
+  assert.equal(nested.architectureDocs.some((doc) => doc.path === "docs/ARCHITECTURE.md" && doc.exists), true);
+  assert.equal(nested.maintainerDocs.some((doc) => doc.path === "docs/MAINTAINER_GUIDE.md" && doc.exists), true);
+  assert.equal(nested.warnings.some((warning) => /No state/.test(warning)), false);
+});
+
 test("detects git dirty state without modifying repo files", async (t) => {
   const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-dirty-"));
   await writeFile(path.join(root, "yaiml.yml"), "yaiml: 0.2\nproject: Dirty Repo\n");

@@ -268,6 +268,7 @@ function parseArcsDocumentPaths(arcsText) {
     state: "statusDocs",
     architecture: "architectureDocs",
     maintainer: "maintainerDocs",
+    maintainer_guide: "maintainerDocs",
     agents: "agentDocs",
     agent: "agentDocs",
   };
@@ -277,6 +278,16 @@ function parseArcsDocumentPaths(arcsText) {
     if (group) {
       docs[group].push(match[2].trim());
     }
+  }
+  const coreBlock = arcsText.match(/^\s{2}core:\s*\r?\n((?:\s{4}[^\r\n]*\r?\n?)*)/m)?.[1] ?? "";
+  for (const match of coreBlock.matchAll(/^\s{4}([a-zA-Z0-9_-]+):\s*["']?([^"'\r\n]+)["']?\s*$/gm)) {
+    const group = roleMap[match[1].toLowerCase()];
+    if (group) {
+      docs[group].push(match[2].trim());
+    }
+  }
+  for (const key of Object.keys(docs)) {
+    docs[key] = uniqueStrings(docs[key]);
   }
 
   return docs;
