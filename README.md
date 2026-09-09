@@ -99,7 +99,7 @@ Registry entries may include optional `codexThread` metadata:
     "threadId": "opaque-codex-thread-id",
     "hostId": "local",
     "title": "Human-readable task title",
-    "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name"
+    "cwd": "C:\\workspace\\repo-name"
   }
 }
 ```

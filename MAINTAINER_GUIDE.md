@@ -9,6 +9,7 @@ durability: stable; update when commands, executor behavior, validation, generat
 budget: About 1600 words; prefer replacing stale procedures over appending.
 read-with: SOT; Architecture.
 update-when: scripts, portfolio command flow, registry reconciliation, run records, or safety boundaries change.
+last-verified: not established; claims not rechecked in this refresh.
 agent-guidance: Validate ShepAIrd honestly. Preserve downstream user work. Do not overclaim Apply capability.
 ---
 
@@ -101,18 +102,18 @@ Registry entries may include optional `codexProject` metadata when a saved repo-
 ```json
 {
   "codexProject": {
-    "projectId": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name",
+    "projectId": "C:\\workspace\\repo-name",
     "hostId": "local",
     "label": "repo-name",
-    "path": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name",
+    "path": "C:\\workspace\\repo-name",
     "kind": "local"
   },
   "codexThread": {
     "threadId": "opaque-codex-thread-id",
     "hostId": "local",
     "title": "Human-readable task title",
-    "cwd": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name",
-    "scopePath": "C:\\Users\\wirsi\\OneDrive\\Desktop\\git\\repo-name"
+    "cwd": "C:\\workspace\\repo-name",
+    "scopePath": "C:\\workspace\\repo-name"
   }
 }
 ```
@@ -139,7 +140,14 @@ If a repo is missing a saved Project or touchpoint task, prefer reporting it cle
 
 ## YAIML Maintenance
 
-Provide the YAIML reference from the human prompt, workspace context, or a team-approved source at run time. Do not commit machine-specific reference paths, local drive names, user profile paths, `file://` URIs, localhost URLs, private workspace URLs, secrets, private transcripts, or raw sensitive logs into versioned project memory.
+Provide the YAIML reference from the human prompt, workspace context, or a team-approved source at run time. Do not commit machine-specific reference paths, local drive names, user profile paths, `file://` URIs, localhost URLs, private workspace URLs, secrets, private transcripts, or raw sensitive logs into versioned project memory. This repository is public, so treat that rule as a disclosure boundary, not a style preference.
+
+### Path Disclosure Status
+
+Verified by inspection: the maintainer's user-profile path had been committed in the illustrative `codexProject`/`codexThread` JSON in this guide and in `README.md`. Those examples now use a neutral `C:\workspace\repo-name` form. Two items stay open as maintainer decisions:
+
+- The working tree is clean of that path in both files, but **committed Git history still contains it** and this repository is public. Removal means a history rewrite, a force push, and re-cloning by anyone holding a copy. Do not attempt it during a documentation or YAIML pass.
+- `registry/projects.json` still holds the profile path in live `codexProject.projectId`, `codexProject.path`, and `codexThread.cwd` values plus a `generatedFrom` note. These are routing identifiers that `npm run threads` compares against registry paths, so decide the routing question first — move absolute paths to ignored local configuration, or accept the disclosure knowingly. Do not blind-replace them with placeholders.
 
 Phrases such as "update YAIML", "updated YAIML", "check new YAIML", "refresh YAIML", or "run a YAIML update" mean convention refresh, not an ordinary project-memory rewrite. For this repository, compare local YAIML scaffolding against the provided reference and update only compatible prompts, templates, discovery hints, agent-instruction pointers, or YAIML-maintenance guidance. Preserve project memory and the existing discovery layout unless a human explicitly authorizes a layout migration.
 

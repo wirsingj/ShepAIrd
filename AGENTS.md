@@ -14,6 +14,8 @@ Before finishing material work, update affected memory and prune stale state wit
 
 "Clean up YAIML", "compress YAIML", "compact project memory", "prune project memory", or "prune SoT" means remove stale or repetitive memory while preserving current truth, direction, evidence, and uncertainty.
 
+Memory is versioned with this repository and this repository is public. Never write drive letters, home or profile directories, local workspace paths, personal account URLs, credentials, tokens, or private personal detail into it. Use neutral placeholders such as `<workspace-root>/repo-name` in examples, and describe sensitive evidence by location and owner instead of copying it.
+
 See the Maintainer Guide for local YAIML maintenance.
 
 Allowed by default:

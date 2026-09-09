@@ -9,6 +9,7 @@ durability: stable; update when registry shape, command flow, executor capabilit
 budget: About 2000 words; preserve necessary invariants if exceeded.
 read-with: SOT; Maintainer Guide; registry/projects.json.
 update-when: registry semantics, workspace reconciliation, CLI/app responsibilities, run records, or executor boundaries change.
+last-verified: not established; claims not rechecked in this refresh.
 agent-guidance: Keep ShepAIrd request-driven, repository-specific, and honest about executor limits.
 ---
 
@@ -129,7 +130,7 @@ Codex Project and task metadata is a lightweight bridge between ShepAIrd's regis
 
 A repo-root Codex Project is the preferred durable home for each registered app. A touchpoint task is the working conversation inside that Project. ShepAIrd's registry should not treat a parent workspace Project as equivalent to a repo-root Project unless the human explicitly wants that temporary route.
 
-`scopePath` exists for parent-workspace Codex tasks. If Codex exposes `C:\...\git` as a saved project but not a specific repository folder, a task may run from the parent workspace while its prompt and registry metadata bind it to one target repository. This is acceptable only when the scope path exactly matches the registry path, but it is not the preferred durable mapping. Parent-workspace tasks add visual clutter to the `git` project and should be explicit, temporary exceptions rather than an automatic fallback.
+`scopePath` exists for parent-workspace Codex tasks. If Codex exposes the parent workspace folder as a saved project but not a specific repository folder, a task may run from the parent workspace while its prompt and registry metadata bind it to one target repository. This is acceptable only when the scope path exactly matches the registry path, but it is not the preferred durable mapping. Parent-workspace tasks add visual clutter to the `git` project and should be explicit, temporary exceptions rather than an automatic fallback.
 
 Campaign handoff prompts include a route guard before the work instructions. The guard repeats the repository scope, saved Codex Project, mapped touchpoint task, task cwd, optional scope path, and the stop condition if the Project or task route does not match. This makes each dispatch self-contained enough to survive task-title drift, parent-workspace cwd, and stale human memory.
 

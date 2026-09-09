@@ -1,4 +1,4 @@
-yaiml: 0.2
+yaiml: "0.2"
 project:
   id: shepaird
   name: ShepAIrd
