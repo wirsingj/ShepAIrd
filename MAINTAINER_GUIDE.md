@@ -6,6 +6,7 @@ purpose: Commands, validation, and safe operating procedure.
 belongs-here: command reference, validation steps, troubleshooting, output locations, executor safety checks.
 not-here: product direction, architecture explanation, downstream implementation detail.
 durability: stable; update when commands, executor behavior, validation, generated outputs, or operating rules change.
+budget: About 1600 words; prefer replacing stale procedures over appending.
 read-with: SOT; Architecture.
 update-when: scripts, portfolio command flow, registry reconciliation, run records, or safety boundaries change.
 agent-guidance: Validate ShepAIrd honestly. Preserve downstream user work. Do not overclaim Apply capability.
@@ -135,6 +136,14 @@ Treat mapped Codex tasks as soft routes. Before dispatching broad work, confirm:
 - waiting-on-approval or interrupted tasks are followed up before assuming work continues.
 
 If a repo is missing a saved Project or touchpoint task, prefer reporting it cleanly. Create new sidebar tasks only when the human explicitly wants that sidebar home, and prefer creating them inside saved repo-specific Codex Projects rather than the parent `git` Project.
+
+## YAIML Maintenance
+
+Requests such as "update YAIML", "updated YAIML", or "check new YAIML" mean: compare ShepAIrd's local YAIML setup against a human-provided, workspace-local, or team-approved reference; refresh compatible guidance; preserve project-specific memory; and keep the existing discovery layout and version marker unless the human explicitly asks for a migration.
+
+Requests such as "clean up YAIML", "compress YAIML", "compact project memory", "prune project memory", or "prune SoT" mean: remove stale, repetitive, resolved, or log-like memory while preserving current truth, human direction, evidence, uncertainty, active risks, and useful lessons.
+
+Keep machine-specific reference paths, local drive names, user-profile paths, `file://` URIs, localhost URLs, secrets, private transcripts, raw sensitive logs, and confidential material out of versioned memory. Distinguish configured persistent instructions from observed fresh-session loading.
 
 When the question is "did the portfolio still validate after work happened elsewhere?", prefer validation mode before Apply:
 

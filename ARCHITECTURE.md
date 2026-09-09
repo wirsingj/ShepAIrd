@@ -6,6 +6,7 @@ purpose: Durable system shape, boundaries, data model, executor model, and invar
 belongs-here: components, registry model, portfolio command flow, execution boundaries, data flow, danger zones.
 not-here: volatile roadmap, command reference, full audit history.
 durability: stable; update when registry shape, command flow, executor capability, or safety boundaries change.
+budget: About 2000 words; preserve necessary invariants if exceeded.
 read-with: SOT; Maintainer Guide; registry/projects.json.
 update-when: registry semantics, workspace reconciliation, CLI/app responsibilities, run records, or executor boundaries change.
 agent-guidance: Keep ShepAIrd request-driven, repository-specific, and honest about executor limits.

@@ -6,6 +6,7 @@ purpose: Current engineering state, direction, risks, and next work for ShepAIrd
 belongs-here: current product purpose, verified capabilities, active risks, validation state, next steps.
 not-here: durable architecture, command reference, complete audit history, downstream implementation details.
 durability: volatile; synthesize and prune aggressively.
+budget: About 2200 words; prune stale state before expanding.
 read-with: Architecture; Maintainer Guide; registry/projects.json.
 update-when: registry scope, portfolio command behavior, execution capability, or validation state changes.
 agent-guidance: Preserve human control. Do not describe aspirational execution as implemented.

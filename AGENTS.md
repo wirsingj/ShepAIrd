@@ -4,6 +4,16 @@ ShepAIrd is the human's private Codex instruction shepherd for registered reposi
 
 Read `../YAIML/docs/SoTY.md`, `SOT.md`, `ARCHITECTURE.md`, `MAINTAINER_GUIDE.md`, `docs/YAIML_META_USAGE.md`, and `registry/projects.json` before changing registry meaning or downstream project interpretation.
 
+## YAIML Project Memory
+
+Before meaningful work, read `yaiml.yml` and the core documents it identifies. Read each selected document's stable header before its body, and load supporting documents only when they are relevant to the task.
+
+Before finishing material work, update affected memory without a separate YAIML reminder. Preserve human direction, current facts, evidence, unresolved conflicts, and review rules; leave unchanged memory alone. Prune stale or repeated content before adding new notes.
+
+"Update YAIML", "updated YAIML", or "check new YAIML" means compare this repository's YAIML guidance against a human-provided or workspace-local reference while preserving local project memory and the existing discovery layout.
+
+"Clean up YAIML", "compress YAIML", "compact project memory", "prune project memory", or "prune SoT" means remove stale or repetitive memory while preserving current truth, evidence, direction, and uncertainty.
+
 Allowed by default:
 
 - inspect registered repositories,
