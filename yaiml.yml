@@ -13,6 +13,9 @@ documents:
   maintainer:
     path: MAINTAINER_GUIDE.md
     title: ShepAIrd Maintainer Guide
+supporting:
+  - path: AI_USAGE.md
+    role: ai-usage-disclosure
 registry:
   projects: registry/projects.json
 generated:

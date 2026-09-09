@@ -13,6 +13,10 @@ It is intentionally thin. ShepAIrd does not try to become a better coding model,
 
 The downstream repositories remain the source of truth for their own YAIML documents, code, risks, and validation evidence. ShepAIrd keeps track of where they are, what needs attention, and which Codex task should receive the next handoff.
 
+## AI Usage
+
+This project is maintained with AI-assisted development. See [AI_USAGE.md](AI_USAGE.md) for the disclosure and provenance expectations.
+
 ## What It Does
 
 Implemented capabilities:
