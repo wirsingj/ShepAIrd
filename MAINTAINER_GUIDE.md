@@ -139,11 +139,13 @@ If a repo is missing a saved Project or touchpoint task, prefer reporting it cle
 
 ## YAIML Maintenance
 
-Requests such as "update YAIML", "updated YAIML", or "check new YAIML" mean: compare ShepAIrd's local YAIML setup against a human-provided, workspace-local, or team-approved reference; refresh compatible guidance; preserve project-specific memory; and keep the existing discovery layout and version marker unless the human explicitly asks for a migration.
+Provide the YAIML reference from the human prompt, workspace context, or a team-approved source at run time. Do not commit machine-specific reference paths, local drive names, user profile paths, `file://` URIs, localhost URLs, private workspace URLs, secrets, private transcripts, or raw sensitive logs into versioned project memory.
 
-Requests such as "clean up YAIML", "compress YAIML", "compact project memory", "prune project memory", or "prune SoT" mean: remove stale, repetitive, resolved, or log-like memory while preserving current truth, human direction, evidence, uncertainty, active risks, and useful lessons.
+Phrases such as "update YAIML", "updated YAIML", "check new YAIML", "refresh YAIML", or "run a YAIML update" mean convention refresh, not an ordinary project-memory rewrite. For this repository, compare local YAIML scaffolding against the provided reference and update only compatible prompts, templates, discovery hints, agent-instruction pointers, or YAIML-maintenance guidance. Preserve project memory and the existing discovery layout unless a human explicitly authorizes a layout migration.
 
-Keep machine-specific reference paths, local drive names, user-profile paths, `file://` URIs, localhost URLs, secrets, private transcripts, raw sensitive logs, and confidential material out of versioned memory. Distinguish configured persistent instructions from observed fresh-session loading.
+Phrases such as "clean up YAIML", "compress YAIML", "compact project memory", "prune project memory", or "prune SoT" mean to remove stale or repetitive memory while preserving current truth, evidence, human direction, decisions, unresolved conflicts, and uncertainty. Do not pad documents to meet budgets or delete necessary governed knowledge just to reduce word count.
+
+This repository does not need local YAIML prompt or template copies unless it already keeps them for a concrete workflow. Do not add `prompts/` or `templates/` just because the reference has them. Preserve project-specific SoT, Architecture, Maintainer Guide, risks, commands, naming, and supporting documents unless the reference changes how future agents should maintain YAIML here.
 
 When the question is "did the portfolio still validate after work happened elsewhere?", prefer validation mode before Apply:
 
