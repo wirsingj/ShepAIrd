@@ -74,7 +74,7 @@ Campaign handoff context is not stored as packet files. Run records are operatio
 
 ## Safe Workflow
 
-1. Re-read `../YAIML/docs/SoTY.md`.
+1. Consult the YAIML reference supplied at run time, using committed content at the requested revision when pinned.
 2. Review `yaiml.yml`.
 3. Review `registry/projects.json`.
 4. Run `npm test`.
@@ -102,18 +102,18 @@ Registry entries may include optional `codexProject` metadata when a saved repo-
 ```json
 {
   "codexProject": {
-    "projectId": "C:\\workspace\\repo-name",
+    "projectId": "<workspace-root>/repo-name",
     "hostId": "local",
     "label": "repo-name",
-    "path": "C:\\workspace\\repo-name",
+    "path": "<workspace-root>/repo-name",
     "kind": "local"
   },
   "codexThread": {
     "threadId": "opaque-codex-thread-id",
     "hostId": "local",
     "title": "Human-readable task title",
-    "cwd": "C:\\workspace\\repo-name",
-    "scopePath": "C:\\workspace\\repo-name"
+    "cwd": "<workspace-root>/repo-name",
+    "scopePath": "<workspace-root>/repo-name"
   }
 }
 ```
@@ -144,16 +144,14 @@ Provide the YAIML reference from the human prompt, workspace context, or a team-
 
 ### Path Disclosure Status
 
-Verified by inspection: the maintainer's user-profile path had been committed in the illustrative `codexProject`/`codexThread` JSON in this guide and in `README.md`. Those examples now use a neutral `C:\workspace\repo-name` form. Two items stay open as maintainer decisions:
+Prior inspection found the maintainer's user-profile path committed in this guide's and `README.md`'s routing examples. This guide now uses `<workspace-root>/repo-name`; README uses a neutral drive placeholder. Two maintainer decisions remain open:
 
 - The working tree is clean of that path in both files, but **committed Git history still contains it** and this repository is public. Removal means a history rewrite, a force push, and re-cloning by anyone holding a copy. Do not attempt it during a documentation or YAIML pass.
 - `registry/projects.json` still holds the profile path in live `codexProject.projectId`, `codexProject.path`, and `codexThread.cwd` values plus a `generatedFrom` note. These are routing identifiers that `npm run threads` compares against registry paths, so decide the routing question first — move absolute paths to ignored local configuration, or accept the disclosure knowingly. Do not blind-replace them with placeholders.
 
-Phrases such as "update YAIML", "updated YAIML", "check new YAIML", "refresh YAIML", or "run a YAIML update" mean convention refresh, not an ordinary project-memory rewrite. For this repository, compare local YAIML scaffolding against the provided reference and update only compatible prompts, templates, discovery hints, agent-instruction pointers, or YAIML-maintenance guidance. Preserve project memory and the existing discovery layout unless a human explicitly authorizes a layout migration.
+For convention-refresh and compression request meanings, follow [AGENTS.md](AGENTS.md#yaiml-project-memory). Obtain the reference at run time; request one if unavailable. Compare its update and init guidance with the existing pointer and maintenance procedures. Preserve discovery layout, version, paths, custom fields, and project knowledge. Do not copy the reference's prompt/template inventory without a concrete local need.
 
-Phrases such as "clean up YAIML", "compress YAIML", "compact project memory", "prune project memory", or "prune SoT" mean to remove stale or repetitive memory while preserving current truth, evidence, human direction, decisions, unresolved conflicts, and uncertainty. Do not pad documents to meet budgets or delete necessary governed knowledge just to reduce word count.
-
-This repository does not need local YAIML prompt or template copies unless it already keeps them for a concrete workflow. Do not add `prompts/` or `templates/` just because the reference has them. Preserve project-specific SoT, Architecture, Maintainer Guide, risks, commands, naming, and supporting documents unless the reference changes how future agents should maintain YAIML here.
+Apply the pointer's synthesis rules to affected memory, compress safely first, and report counts, necessary growth, and retained overages outside memory. Verify affected links, discovery paths, stable headers, sensitive-content handling, and instruction scope. Repeat the comparison to ensure healthy files stay unchanged. Report configured persistence separately from observed fresh-session loading; do not infer automatic writing or sustained pruning from a read-only check.
 
 When the question is "did the portfolio still validate after work happened elsewhere?", prefer validation mode before Apply:
 
@@ -171,17 +169,7 @@ Manual or engine-dependent checks may be recorded with `"kind": "manual"` when S
 
 ## Campaign Lenses
 
-Plan-mode campaign lenses are implemented as read-only ephemeral handoff context for:
-
-- `security`
-- `performance`
-- `bug-check` / code-pattern review
-- `architecture`
-- `readability`
-- `release-readiness`
-- `test-coverage`
-- `docs-drift`
-- `yaiml`
+See [Architecture](ARCHITECTURE.md#campaign-lenses) for supported Plan-mode lenses and the dispatch contract.
 
 For each selected repository, campaign handoff context includes:
 
@@ -195,15 +183,11 @@ For each selected repository, campaign handoff context includes:
 - when to update YAIML;
 - when to block for human judgment.
 
-Do not implement broad Apply behavior for a lens inside ShepAIrd. A lens should normally become a Codex handoff to the target repo context. Deterministic local Apply behavior is appropriate only for tiny support utilities such as validation, manifest cleanup, or run-note maintenance.
-
-Campaign Apply accepts a programmatic `handoffDispatcher` hook. In tests this proves the thin dispatch contract without tying ShepAIrd's core to the Codex app. Without that hook, CLI campaign Apply blocks and records the prepared handoff prompt/context.
+Use a configured `handoffDispatcher` for campaign Apply; without it the CLI blocks and records prepared context. Delegate reasoning and implementation to Codex in the target repository. Limit direct Apply to tiny support utilities such as validation, manifest cleanup, and run-note maintenance.
 
 Docs-drift and YAIML campaign handoff context also includes shallow content signals: declared YAIML document presence/headings, README presence/headings, and possible stale terminology. Treat these as pointers for Codex inspection, not as completed findings.
 
-Current limitation: campaign handoff context inspects bounded file inventories, package scripts, and shallow docs/YAIML signals, but CLI/Electron do not yet locate/message repo-specific Codex chats, inspect source contents deeply, or produce findings by themselves. The next useful improvement is a thin Codex app thread adapter.
-
-When a campaign needs reasoning or implementation beyond deterministic local edits, prefer sending precise Codex handoff context rather than expanding ShepAIrd into a general-purpose agent or writing packet files.
+CLI/Electron do not locate/message repo-specific Codex chats or produce deep findings themselves. Keep handoffs ephemeral; do not add packet files or a general-purpose agent. Current development priorities belong in [SOT](SOT.md#next-five-steps).
 
 ## Apply Safety
 

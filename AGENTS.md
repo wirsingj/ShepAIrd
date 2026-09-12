@@ -2,13 +2,17 @@
 
 ShepAIrd is the human's private Codex instruction shepherd for registered repositories, not a public product, command center, or unbounded autonomous migration bot.
 
-Read `../YAIML/docs/SoTY.md`, `SOT.md`, `ARCHITECTURE.md`, `MAINTAINER_GUIDE.md`, `docs/YAIML_META_USAGE.md`, and `registry/projects.json` before changing registry meaning or downstream project interpretation.
+Read `SOT.md`, `ARCHITECTURE.md`, `MAINTAINER_GUIDE.md`, `docs/YAIML_META_USAGE.md`, and `registry/projects.json` before changing registry meaning or downstream project interpretation. Consult the YAIML reference supplied at run time; use its committed content when a revision is pinned.
 
 ## YAIML Project Memory
 
 Before meaningful work, read `yaiml.yml` and its core documents: SoT for current state, Architecture for system boundaries, and Maintainer Guide for procedures. Read each selected document's stable header before its body. Load supporting material only when task-relevant, reuse already-loaded context while current, and verify consequential claims against the repository.
 
-Before finishing material work, update affected memory and prune stale state without waiting for a separate YAIML request. Respect read-only task scope; report pending updates when writing is unavailable. Leave unchanged memory alone. Preserve declared direction, evidence scope, uncertainty, and unresolved contributor disagreements. Do not append a work diary.
+Before finishing material work, update affected memory without a separate YAIML request. Respect read-only scope and review rules; report pending updates when writing is unavailable. Leave unchanged memory alone.
+
+Replace the existing account of changed facts; remove superseded claims and resolved active items. Keep completed work only as current capability, a still-relevant decision or constraint, or a lesson that changes future action. Keep one detailed home per fact and link from other roles. Do not append session summaries or relocate history into supporting files.
+
+Preserve human direction, evidence scope, uncertainty, unresolved contributor disagreements, and governed records. Measure affected documents before and after, check existing budgets, and compress safely first. Do not pad or inflate budgets. Report necessary net growth, its reason, retained overages, and next action in the task response, not memory.
 
 "Update YAIML", "updated YAIML", "check new YAIML", or "run a YAIML update" means refresh convention guidance from a human-provided, workspace-local, or team-approved reference. Preserve project memory and the existing discovery layout.
 
