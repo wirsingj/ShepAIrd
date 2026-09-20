@@ -8,6 +8,7 @@ import {
   buildCodexTaskMap,
   buildStatusReport,
   inspectRegistry,
+  loadRegistry,
   orderProjects,
 } from "../src/registry.mjs";
 
@@ -263,4 +264,64 @@ test("codex route map separates saved projects from touchpoint tasks", async () 
   assert.match(codexTaskMap, /Touchpoint tasks missing total: 1/);
   assert.match(codexTaskMap, /Route health: needs touchpoint task/);
   assert.match(codexTaskMap, /create one durable touchpoint task/);
+});
+
+test("local route overlay supplies private Codex routing without public registry fields", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "shepaird-local-routes-"));
+  await mkdir(path.join(root, "registry"), { recursive: true });
+  await mkdir(path.join(root, "app"), { recursive: true });
+  await writeFile(path.join(root, "app", "SOT.md"), "# App State\n");
+
+  const registryPath = path.join(root, "registry", "projects.json");
+  await writeFile(registryPath, JSON.stringify({
+    schema: "shepaird.registry.v0",
+    projects: [
+      {
+        id: "app",
+        name: "App",
+        kind: "app",
+        path: "app",
+        statusDocuments: ["SOT.md"],
+        architectureDocuments: [],
+        maintainerDocuments: [],
+        agentInstructions: [],
+        yaimlDocuments: [],
+        dependsOn: [],
+        capabilities: { produces: [], consumes: [] },
+        validation: ["git status review"],
+      },
+    ],
+  }, null, 2));
+  await writeFile(path.join(root, "registry", "local-routes.json"), JSON.stringify({
+    schema: "shepaird.local-routes.v0",
+    projects: {
+      app: {
+        codexProject: {
+          projectId: path.join(root, "app"),
+          hostId: "local",
+          label: "App",
+          path: path.join(root, "app"),
+          kind: "local",
+        },
+        codexThread: {
+          threadId: "thread-app",
+          hostId: "local",
+          title: "App task",
+          cwd: path.join(root, "app"),
+        },
+      },
+    },
+  }, null, 2));
+
+  const registry = await loadRegistry(registryPath);
+  assert.equal(registry.projects[0].codexProject.projectId, path.join(root, "app"));
+  assert.equal(registry.projects[0].codexThread.threadId, "thread-app");
+  assert.equal(registry.localRoutesLoaded, true);
+
+  const inspected = await inspectRegistry(registryPath);
+  const codexTaskMap = buildCodexTaskMap(inspected);
+  assert.match(codexTaskMap, /Codex Projects mapped: 1/);
+  assert.match(codexTaskMap, /Mapped tasks: 1/);
+  assert.match(codexTaskMap, /Ready routes: 1/);
+  assert.match(codexTaskMap, /App task/);
 });

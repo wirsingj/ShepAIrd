@@ -97,28 +97,33 @@ Each portfolio run compares selected repositories with the most recent prior run
 
 To resume a matching interrupted run, include `resume` in the command text or call `runPortfolioCommand` with `resume: true`. Resume skips only repositories previously marked `completed` or `dispatched`; it does not skip `planned`, `blocked`, or `failed` entries.
 
-Registry entries may include optional `codexProject` metadata when a saved repo-root Codex Project is known, plus optional `codexThread` metadata when a stable repo touchpoint task is known:
+Versioned registry entries should not include machine-specific Codex routing. Put private route metadata in ignored `registry/local-routes.json`, or set `SHEPAIRD_LOCAL_ROUTES` to another local file. The overlay uses project ids as keys:
 
 ```json
 {
-  "codexProject": {
-    "projectId": "<workspace-root>/repo-name",
-    "hostId": "local",
-    "label": "repo-name",
-    "path": "<workspace-root>/repo-name",
-    "kind": "local"
-  },
-  "codexThread": {
-    "threadId": "opaque-codex-thread-id",
-    "hostId": "local",
-    "title": "Human-readable task title",
-    "cwd": "<workspace-root>/repo-name",
-    "scopePath": "<workspace-root>/repo-name"
+  "schema": "shepaird.local-routes.v0",
+  "projects": {
+    "repo-id": {
+      "codexProject": {
+        "projectId": "<workspace-root>/repo-name",
+        "hostId": "local",
+        "label": "repo-name",
+        "path": "<workspace-root>/repo-name",
+        "kind": "local"
+      },
+      "codexThread": {
+        "threadId": "opaque-codex-thread-id",
+        "hostId": "local",
+        "title": "Human-readable task title",
+        "cwd": "<workspace-root>/repo-name",
+        "scopePath": "<workspace-root>/repo-name"
+      }
+    }
   }
 }
 ```
 
-Do not infer or auto-write Project or thread IDs from fuzzy titles. Add this metadata only when the intended saved Project or repo task is confirmed from Codex app metadata. Omit `scopePath` when the task cwd is already the repository root. Use `scopePath` only for explicit parent-workspace exceptions, and only when it exactly matches the intended registry path. Do not auto-create parent-workspace tasks merely to eliminate an unmapped count.
+Do not infer or auto-write Project or thread IDs from fuzzy titles. Add this metadata only when the intended saved Project or repo task is confirmed from Codex app metadata. Omit `scopePath` when the task cwd is already the repository root. Use `scopePath` only for explicit parent-workspace exceptions, and only when it exactly matches the intended registry path. Do not auto-create parent-workspace tasks merely to eliminate an unmapped count. The loader still accepts legacy inline route fields in `registry/projects.json`, but do not add new inline local routes to public memory.
 
 Before sending portfolio work to existing Codex repo tasks, run:
 
@@ -147,7 +152,7 @@ Provide the YAIML reference from the human prompt, workspace context, or a team-
 Prior inspection found the maintainer's user-profile path committed in this guide's and `README.md`'s routing examples. This guide now uses `<workspace-root>/repo-name`; README uses a neutral drive placeholder. Two maintainer decisions remain open:
 
 - The working tree is clean of that path in both files, but **committed Git history still contains it** and this repository is public. Removal means a history rewrite, a force push, and re-cloning by anyone holding a copy. Do not attempt it during a documentation or YAIML pass.
-- `registry/projects.json` still holds the profile path in live `codexProject.projectId`, `codexProject.path`, and `codexThread.cwd` values plus a `generatedFrom` note. These are routing identifiers that `npm run threads` compares against registry paths, so decide the routing question first — move absolute paths to ignored local configuration, or accept the disclosure knowingly. Do not blind-replace them with placeholders.
+- Local route paths now belong in ignored route overlay data, not `registry/projects.json`. If old inline route paths return, move them back into `registry/local-routes.json` or another `SHEPAIRD_LOCAL_ROUTES` file rather than replacing them with placeholders in the public registry.
 
 For convention-refresh and compression request meanings, follow [AGENTS.md](AGENTS.md#yaiml-project-memory). Obtain the reference at run time; request one if unavailable. Compare its update and init guidance with the existing pointer and maintenance procedures. Preserve discovery layout, version, paths, custom fields, and project knowledge. Do not copy the reference's prompt/template inventory without a concrete local need.
 

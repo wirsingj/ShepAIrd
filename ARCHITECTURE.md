@@ -30,7 +30,8 @@ ShepAIrd may inspect, plan, dispatch, and, for implemented bounded Apply actions
 ## Components
 
 - `yaiml.yml`: ShepAIrd's own YAIML memory index.
-- `registry/projects.json`: managed-project policy, dependency order, registry paths, capabilities, validation commands, and evidence pointers.
+- `registry/projects.json`: versioned managed-project policy, dependency order, registry paths, capabilities, validation commands, and evidence pointers.
+- `registry/local-routes.json`: ignored local overlay for private Codex Project and touchpoint task coordinates when present.
 - `src/registry.mjs`: registry loader, project inspector, status report builder, capability mapper, and Codex Project/task route-map reporter.
 - `src/intake.mjs`: workspace/repo scanner used by the shell.
 - `src/intakeView.mjs`: dependency-free Token Strip and dossier rendering helpers.
@@ -118,15 +119,15 @@ Each project entry records:
 - validation commands,
 - optional validation working directories,
 - optional interface evidence entries with capability, role, source paths, and summary,
-- optional `codexProject` compatibility metadata with `projectId`, `hostId`, `label`, `path`, and `kind`,
-- optional `codexThread` touchpoint metadata with `threadId`, `hostId`, `title`, `cwd`, and `scopePath`,
 - notes from audit evidence.
+
+Machine-specific `codexProject` and `codexThread` metadata belongs in an ignored local route overlay rather than the public registry. The loader still accepts legacy inline route fields for compatibility, but public registry memory should not contain local drive paths, profile paths, or private Codex task coordinates.
 
 Discovered repositories that are not managed are inspect-only until explicitly included by policy or command scope.
 
 ## Codex Project And Task Routing
 
-Codex Project and task metadata is a lightweight bridge between ShepAIrd's registry and the Codex app's Project/task tools. A mapped repository can record the saved Codex Project's opaque id, host id, label, kind, and local path, plus one durable touchpoint task's opaque task id, host id, human title, task cwd, and optional repository `scopePath`. ShepAIrd validates this metadata only as local routing evidence: it can report saved or missing Projects, mapped or missing touchpoint tasks, compare Project paths, compare task cwd or scope path against registry path, and include the mapping in handoff context.
+Codex Project and task metadata is a lightweight local bridge between ShepAIrd's registry and the Codex app's Project/task tools. A local route overlay can record the saved Codex Project's opaque id, host id, label, kind, and local path, plus one durable touchpoint task's opaque task id, host id, human title, task cwd, and optional repository `scopePath`. ShepAIrd validates this metadata only as local routing evidence: it can report saved or missing Projects, mapped or missing touchpoint tasks, compare Project paths, compare task cwd or scope path against registry path, and include the mapping in handoff context.
 
 A repo-root Codex Project is the preferred durable home for each registered app. A touchpoint task is the working conversation inside that Project. ShepAIrd's registry should not treat a parent workspace Project as equivalent to a repo-root Project unless the human explicitly wants that temporary route.
 
@@ -134,7 +135,7 @@ A repo-root Codex Project is the preferred durable home for each registered app.
 
 Campaign handoff prompts include a route guard before the work instructions. The guard repeats the repository scope, saved Codex Project, mapped touchpoint task, task cwd, optional scope path, and the stop condition if the Project or task route does not match. This makes each dispatch self-contained enough to survive task-title drift, parent-workspace cwd, and stale human memory.
 
-ShepAIrd does not own Codex task execution. The CLI command `node src/cli.mjs threads` and generated `output/codex-task-map.md` are preflight reports for Codex, not a background dispatcher. Actual messaging to repo tasks happens through Codex app tooling when the human or this Codex session chooses to dispatch work.
+ShepAIrd does not own Codex task execution. The CLI command `node src/cli.mjs threads` and generated `output/codex-task-map.md` are preflight reports for Codex, not a background dispatcher. Actual messaging to repo tasks happens through Codex app tooling when the human or this Codex session chooses to dispatch work. Route reports may contain local paths because they are generated output; do not treat them as versioned memory.
 
 For repositories missing saved Codex Projects or touchpoint tasks, ShepAIrd should not silently create parent-workspace tasks just to make the route map complete. Safer choices are: report the unmapped repos, ask for explicit task creation, create or use saved repo-specific Codex Projects when available, or perform bounded current-thread inspection/validation without creating sidebar tasks.
 
@@ -151,7 +152,7 @@ For repositories missing saved Codex Projects or touchpoint tasks, ShepAIrd shou
 - Missing documents are reported, not invented.
 - Dirty working trees are inspected and preserved, not reset or cleaned.
 - Campaign handoff context is ephemeral run context, not execution proof.
-- Codex Project and thread metadata is routing compatibility data only; absence means unmapped, not unmanaged.
+- Codex Project and thread metadata is local routing compatibility data only; absence means unmapped, not unmanaged.
 - Codex route-map reports are routing preflights, not proof that a task has been messaged or completed work.
 - Every Codex handoff prompt must carry its repository scope, Project/task route, and route guard; do not rely on the receiving task's title or prior chat memory.
 - Shallow content signals are audit pointers, not findings.

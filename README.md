@@ -91,15 +91,20 @@ Apply is intentionally narrow. It can run implemented support actions, validatio
 
 ## Codex Task Routing
 
-Registry entries may include optional `codexThread` metadata:
+Public registry entries describe repository policy and evidence. Machine-specific Codex Project and task routes live in ignored local overlay data at `registry/local-routes.json`, or in the path named by `SHEPAIRD_LOCAL_ROUTES`.
 
 ```json
 {
-  "codexThread": {
-    "threadId": "opaque-codex-thread-id",
-    "hostId": "local",
-    "title": "Human-readable task title",
-    "cwd": "C:\\workspace\\repo-name"
+  "schema": "shepaird.local-routes.v0",
+  "projects": {
+    "repo-id": {
+      "codexThread": {
+        "threadId": "opaque-codex-thread-id",
+        "hostId": "local",
+        "title": "Human-readable task title",
+        "cwd": "<workspace-root>/repo-name"
+      }
+    }
   }
 }
 ```
@@ -110,7 +115,7 @@ Run:
 npm run threads
 ```
 
-This prints mapped and unmapped repositories, verifies task cwd values against registry paths, and lists validation commands. It is a preflight report for Codex routing, not proof that any task was messaged or completed.
+This prints mapped and unmapped repositories, verifies task cwd values against registry paths, and lists validation commands. It is a preflight report for Codex routing, not proof that any task was messaged or completed. Do not commit local route overlays or generated route reports containing private paths.
 
 ## Generated Output
 
@@ -133,6 +138,7 @@ Generated output is operational evidence. It should not replace downstream YAIML
 - `src/cli.mjs` - command-line entrypoint.
 - `shell/` - minimal Electron command hub.
 - `registry/projects.json` - managed project registry.
+- `registry/local-routes.json` - ignored private Codex routing overlay, when present.
 - `SOT.md` - current project state.
 - `ARCHITECTURE.md` - durable design and boundaries.
 - `MAINTAINER_GUIDE.md` - operating procedure and validation.

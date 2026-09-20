@@ -12,6 +12,8 @@ Before finishing material work, update affected memory without a separate YAIML 
 
 Replace the existing account of changed facts; remove superseded claims and resolved active items. Keep completed work only as current capability, a still-relevant decision or constraint, or a lesson that changes future action. Keep one detailed home per fact and link from other roles. Do not append session summaries or relocate history into supporting files.
 
+Keep routine edits within the smallest affected passages; preserve unrelated wording and structure. Broad compression belongs in separately scoped work. Memory describes this checkout; distinguish proposed, implemented, and deployed. With a PR/MR, reconcile affected memory against the actual target and combined changes before integration, including clean textual merges. Preserve independent contributions; never choose an entire conflicting document by side. Keep decision conflicts visible and route dependent choices to existing review authority. Recheck affected claims and evidence after integration changes; report unavailable target context or unrun checks. Follow repository branch permissions.
+
 Preserve human direction, evidence scope, uncertainty, unresolved contributor disagreements, and governed records. Measure affected documents before and after, check existing budgets, and compress safely first. Do not pad or inflate budgets. Report necessary net growth, its reason, retained overages, and next action in the task response, not memory.
 
 "Update YAIML", "updated YAIML", "check new YAIML", or "run a YAIML update" means refresh convention guidance from a human-provided, workspace-local, or team-approved reference. Preserve project memory and the existing discovery layout.

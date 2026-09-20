@@ -17,17 +17,49 @@ export async function loadRegistry(registryPath = defaultRegistryPath()) {
     throw new Error("Registry projects must be an array.");
   }
   const baseDir = path.resolve(path.dirname(absoluteRegistryPath), "..");
+  const localRoutes = await loadLocalRoutes(absoluteRegistryPath);
   return {
     ...registry,
     registryPath: absoluteRegistryPath,
     baseDir,
-    projects: registry.projects.map((project) => ({
-      ...project,
-      absolutePath: path.resolve(baseDir, project.path),
-      codexProject: normalizeCodexProject(project.codexProject),
-      codexThread: normalizeCodexThread(project.codexThread),
-    })),
+    localRoutesPath: localRoutes.path,
+    localRoutesLoaded: localRoutes.loaded,
+    projects: registry.projects.map((project) => {
+      const localRoute = localRoutes.projects.get(project.id) ?? {};
+      return {
+        ...project,
+        absolutePath: path.resolve(baseDir, project.path),
+        codexProject: normalizeCodexProject(localRoute.codexProject ?? project.codexProject),
+        codexThread: normalizeCodexThread(localRoute.codexThread ?? project.codexThread),
+      };
+    }),
   };
+}
+
+async function loadLocalRoutes(absoluteRegistryPath) {
+  const overlayPath = process.env.SHEPAIRD_LOCAL_ROUTES
+    ? path.resolve(process.env.SHEPAIRD_LOCAL_ROUTES)
+    : path.join(path.dirname(absoluteRegistryPath), "local-routes.json");
+  try {
+    const raw = await fs.readFile(overlayPath, "utf8");
+    const overlay = JSON.parse(raw);
+    if (overlay.schema !== "shepaird.local-routes.v0") {
+      throw new Error(`Unsupported local route schema: ${overlay.schema}`);
+    }
+    const entries = Array.isArray(overlay.projects)
+      ? overlay.projects.map((item) => [item.id, item])
+      : Object.entries(overlay.projects ?? {});
+    return {
+      path: overlayPath,
+      loaded: true,
+      projects: new Map(entries.filter(([id]) => id)),
+    };
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return { path: overlayPath, loaded: false, projects: new Map() };
+    }
+    throw error;
+  }
 }
 
 export async function inspectRegistry(registryPath = defaultRegistryPath()) {

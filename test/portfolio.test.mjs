@@ -207,13 +207,40 @@ test("campaign plan mode builds ephemeral handoff context without stored packet 
   await assert.rejects(readFile(path.join(fixture.root, "output", "work-packets", "security", "web-app-security-campaign.md"), "utf8"));
 });
 
+test("campaign plan only requests fixes when the command explicitly asks for them", async (t) => {
+  const fixture = await makeFixture(t);
+  const repo = path.join(fixture.root, "audit-app");
+  await makeRepo(repo);
+  await writeYaiml(repo, "SOT.md");
+  await writeRegistry(fixture, [project("audit-app", "Audit App", "audit-app")], ["audit-app"]);
+
+  const reportOnly = await runPortfolioCommand("Plan docs-drift pass after previous audit surface fix", {
+    registryPath: fixture.registryPath,
+    outputRoot: path.join(fixture.root, "output-report-only"),
+  });
+  assert.equal(reportOnly.repositories[0].campaignHandoff.command.includes("report findings"), true);
+  assert.match(reportOnly.repositories[0].campaignHandoff.prompt, /Fix safe bounded issues: no/);
+
+  const withFixes = await runPortfolioCommand("Plan docs-drift pass and fix low-risk issues", {
+    registryPath: fixture.registryPath,
+    outputRoot: path.join(fixture.root, "output-with-fixes"),
+  });
+  assert.equal(withFixes.repositories[0].campaignHandoff.command.includes("fix safe bounded issues"), true);
+  assert.match(withFixes.repositories[0].campaignHandoff.prompt, /Fix safe bounded issues: yes/);
+});
+
 test("docs-drift campaign handoff includes shallow content signals", async (t) => {
   const fixture = await makeFixture(t);
   const repo = path.join(fixture.root, "docs-app");
   await makeRepo(repo);
   await writeYaiml(repo, "SOT.md");
+  await writeFile(path.join(repo, "AI_USAGE.md"), "# AI Usage\n");
   await writeFile(path.join(repo, "README.md"), "# Docs App\n\nLegacy ARCS packet language.\n");
-  await writeRegistry(fixture, [project("docs-app", "Docs App", "docs-app")], ["docs-app"]);
+  await writeRegistry(fixture, [
+    project("docs-app", "Docs App", "docs-app", {
+      yaimlDocuments: ["yaiml.yml", "SOT.md", "AI_USAGE.md"],
+    }),
+  ], ["docs-app"]);
 
   const run = await runPortfolioCommand("Review docs drift across every app", {
     registryPath: fixture.registryPath,
@@ -226,6 +253,9 @@ test("docs-drift campaign handoff includes shallow content signals", async (t) =
   assert.ok(signals.some((item) => item.includes("Declared YAIML document missing: ARCHITECTURE.md")));
   assert.match(run.repositories[0].campaignHandoff.prompt, /Shallow content signals:/);
   assert.ok(run.repositories[0].campaignHandoff.auditSurfaces.some((item) => item.includes("Shallow content signal:")));
+  assert.ok(run.repositories[0].campaignHandoff.auditSurfaces.some((item) => item.includes("Declared YAIML/doc: AI_USAGE.md")));
+  const markdown = await readFile(path.join(fixture.root, "output", "runs", `${run.id}.md`), "utf8");
+  assert.match(markdown, /\(\+\d+ more\)/);
 });
 
 test("campaign apply is blocked until a Codex handoff dispatcher exists", async (t) => {
@@ -530,7 +560,7 @@ function project(id, name, repoPath, overrides = {}) {
     maintainerDocuments: [],
     agentInstructions: [],
     arcsDocuments: [],
-    yaimlDocuments: ["yaiml.yml"],
+    yaimlDocuments: overrides.yaimlDocuments ?? ["yaiml.yml"],
     dependsOn: overrides.dependsOn ?? [],
     capabilities: overrides.capabilities ?? { produces: [], consumes: [] },
     validation: overrides.validation ?? ["git status review"],

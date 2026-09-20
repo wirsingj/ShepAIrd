@@ -307,7 +307,7 @@ export async function processRepository(project, command, options = {}) {
       const contentSignals = await collectContentSignals(project.absolutePath, docset, command.campaignLens);
       result.campaignHandoff = buildCampaignHandoff(project, docset, gitBefore, command.campaignLens, fileSignals, {
         contentSignals,
-        requestedFixes: /\b(fix|correct|repair|resolve|address)\b/i.test(command.text),
+        requestedFixes: requestsSafeFixes(command.text),
       });
       result.notes.push(`Prepared ephemeral ${CAMPAIGN_LENSES[command.campaignLens].title} Codex handoff context.`);
     }
@@ -335,7 +335,7 @@ export async function processRepository(project, command, options = {}) {
     const contentSignals = await collectContentSignals(project.absolutePath, docset, command.campaignLens);
     result.campaignHandoff = buildCampaignHandoff(project, docset, gitBefore, command.campaignLens, fileSignals, {
       contentSignals,
-      requestedFixes: /\b(fix|correct|repair|resolve|address)\b/i.test(command.text),
+      requestedFixes: requestsSafeFixes(command.text),
     });
     if (typeof options.handoffDispatcher !== "function") {
       result.status = "blocked";
@@ -369,6 +369,15 @@ export async function processRepository(project, command, options = {}) {
   }
   result.gitAfter = await gitStatus(project.absolutePath);
   return result;
+}
+
+function requestsSafeFixes(text) {
+  const lower = text.toLowerCase();
+  const verbs = "(fix|correct|repair|resolve|address)";
+  const objects = "(safe|bounded|low-risk|issues?|bugs?|problems?|failures?|findings?|regressions?|comments?|warnings?)";
+  return new RegExp(`^\\s*${verbs}\\b`, "i").test(lower)
+    || new RegExp(`\\b(and|then|also|please|to)\\s+${verbs}\\b`, "i").test(lower)
+    || new RegExp(`\\b${verbs}\\s+(?:${objects})\\b`, "i").test(lower);
 }
 
 export function buildPortfolioReport(run) {
@@ -415,7 +424,7 @@ export function buildPortfolioReport(run) {
     if (repo.campaignHandoff) {
       lines.push(`- Campaign objective: ${repo.campaignHandoff.objective}`);
       lines.push(`- Codex handoff: ${repo.campaignHandoff.command}`);
-      lines.push(`- Audit surfaces: ${repo.campaignHandoff.auditSurfaces.slice(0, 6).join("; ")}`);
+      lines.push(`- Audit surfaces: ${formatAuditSurfaceSummary(repo.campaignHandoff.auditSurfaces)}`);
     }
     if (repo.handoff?.status) {
       lines.push(`- Handoff: ${repo.handoff.status}${repo.handoff.target ? ` (${repo.handoff.target})` : ""}`);
@@ -441,6 +450,13 @@ export function buildPortfolioReport(run) {
   lines.push(`- Missing registry entries: ${run.reconciliation.missing.length}`);
   lines.push(`- Possible moves: ${run.reconciliation.moved.length}`);
   return lines.join("\n");
+}
+
+function formatAuditSurfaceSummary(surfaces, limit = 6) {
+  const visible = surfaces.slice(0, limit);
+  const hidden = Math.max(0, surfaces.length - visible.length);
+  const suffix = hidden > 0 ? `; ... (+${hidden} more)` : "";
+  return `${visible.join("; ")}${suffix}`;
 }
 
 async function applyTemporaryArcsCleanup(root, docset, result) {
@@ -873,6 +889,9 @@ function inferAuditSurfaces(project, docset, lens, fileSignals = { files: [], ma
   }
   for (const doc of project.agentInstructions ?? []) {
     surfaces.add(`Agent instructions: ${doc}`);
+  }
+  for (const doc of project.yaimlDocuments ?? []) {
+    surfaces.add(`Declared YAIML/doc: ${doc}`);
   }
   for (const item of project.interfaceEvidence ?? []) {
     for (const evidencePath of item.paths ?? []) {
