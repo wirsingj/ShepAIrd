@@ -6,6 +6,12 @@ Read `SOT.md`, `ARCHITECTURE.md`, `MAINTAINER_GUIDE.md`, `docs/YAIML_META_USAGE.
 
 ## YAIML Project Memory
 
+The maintainer treats these projects as works in progress: latest working files, including uncommitted edits, are the current baseline. Preserve that work; branch names and older commits do not establish production state or permission for Git mutations.
+
+Read and follow [.yaiml/YAIML_GUIDE.md](.yaiml/YAIML_GUIDE.md) and the [skill catalog](.yaiml/skills/INDEX.md). Select relevant methods, read their bodies and pass requested actions/counts/perspectives unchanged. Ordinary work uses context and maintains material understanding, including confirmed conversational decisions and new verification evidence, without a YAIML reminder. Init executes bootstrap immediately; routine startup uses local guidance without upstream polling or backlog execution. Native `.agents/skills/` entries route to these canonical methods.
+
+At startup/context refresh, consider coordination from available context. For a concrete benefit, read [.yaiml/YAIMLACP.md](.yaiml/YAIMLACP.md), explain scope, access, limits, cost and the single-agent alternative, and obtain affirmative confirmation before first use or changed scope/cost. Otherwise continue independently.
+
 Before meaningful work, read `yaiml.yml` and its core documents: SoT for current state, Architecture for system boundaries, and Maintainer Guide for procedures. Read each selected document's stable header before its body. Load supporting material only when task-relevant, reuse already-loaded context while current, and verify consequential claims against the repository.
 
 Before finishing material work, update affected memory without a separate YAIML request. Respect read-only scope and review rules; report pending updates when writing is unavailable. Leave unchanged memory alone.

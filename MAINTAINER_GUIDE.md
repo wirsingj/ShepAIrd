@@ -9,11 +9,13 @@ durability: stable; update when commands, executor behavior, validation, generat
 budget: About 1600 words; prefer replacing stale procedures over appending.
 read-with: SOT; Architecture.
 update-when: scripts, portfolio command flow, registry reconciliation, run records, or safety boundaries change.
-last-verified: not established; claims not rechecked in this refresh.
+last-verified: 2026-10-17; current checks and limits are recorded below; unrelated claims retain their prior scope.
 agent-guidance: Validate ShepAIrd honestly. Preserve downstream user work. Do not overclaim Apply capability.
 ---
 
 # ShepAIrd Maintainer Guide
+
+On 2026-10-17, Windows/Node 22.22.3 reran all 41 tests, `node scripts/build-shell.mjs` and `node src/cli.mjs all` successfully. Coverage includes root/nested discovery, both layouts, map-relative paths and bounded continuation. Report generation is not a downstream deployment or blanket application validation.
 
 ## Operator Model
 
@@ -145,6 +147,14 @@ If a repo is missing a saved Project or touchpoint task, prefer reporting it cle
 
 ## YAIML Maintenance
 
+### Applied YAIML Source And Routes
+
+Read and follow [Using YAIML](.yaiml/YAIML_GUIDE.md) and the [skill catalog](.yaiml/skills/INDEX.md) for ordinary context/maintenance and requested workflows, including Git actions. Root `AGENTS.md` connects these methods; twelve `.agents/skills/` entries forward arguments. Dormant starters support offline memory creation/repair; instantiate them only for a concrete need. Preserve local facts, authority, budgets, privacy, retention and discovery layout. Coordinate concurrent writers; re-reading is not a lock. Reconcile combined meaning against the actual integration target and common ancestor.
+
+Source: [YAIML](https://github.com/wirsingj/YAIML), published revision `89c883d9a66dffc3b8671d975f7fa6c46535d676`. The 27-resource bundle SHA-256 is `3958b3c802cef951147d316c41a48e0aa7ad6c2aa72c84954c3cac003c169e07` (sorted package-relative paths, NUL, Git blob bytes; CRLF/LF differences verified). The pre-upgrade baseline was unavailable; local guidance remains preserved.
+
+The [notice](.yaiml/YAIML_NOTICE.md) covers copied resources, permits commercial/client use with credit and preserves earlier grants; the application license is unchanged. Refresh from the recorded or an authorized newer source. No startup polling or automatic backlog work. Resource/link/native-entry and ShepAIrd discovery checks passed on 2026-10-17. Fresh-session activation remains untested here; current checks are recorded in this guide. Repeat reconciliation must leave healthy files unchanged.
+
 Provide the YAIML reference from the human prompt, workspace context, or a team-approved source at run time. Do not commit machine-specific reference paths, local drive names, user profile paths, `file://` URIs, localhost URLs, private workspace URLs, secrets, private transcripts, or raw sensitive logs into versioned project memory. This repository is public, so treat that rule as a disclosure boundary, not a style preference.
 
 ### Path Disclosure Status
@@ -228,6 +238,7 @@ npm run portfolio:inspect
 Focused checks:
 
 ```powershell
+node --test test/yaiml-discovery.test.mjs
 rg "ARCS|arcs|SoTA|../ARCS|docs/ARCS_META_USAGE"
 rg "does not edit downstream|only emits|packet files|work packets are execution"
 rg "git commit|git push|deploy|publish|release"
@@ -238,9 +249,8 @@ Expected remaining ARCS hits should be temporary-rename cleanup support only.
 ## Troubleshooting
 
 - If a registered repo is missing, run portfolio Inspect and compare reconciliation output against `registry/projects.json`.
-- If a document is reported missing, check the repository's `yaiml.yml` before adding or hardcoding a state document path.
-- If `arcs.yml` exists without `yaiml.yml`, treat it as a temporary ARCS-era cleanup signal.
-- If both `arcs.yml` and `yaiml.yml` exist in a downstream repo, stop for manual reconciliation.
+- If a document is missing, inspect the selected root or `.yaiml/` map; paths are relative to its directory. Keep registry document/evidence paths aligned after an approved relocation.
+- Root YAIML maps retain precedence over `.yaiml/` maps; reconcile duplicates manually. Both `.yml` and `.yaml` work. ARCS is a fallback; cleanup blocks when any YAIML map also exists.
 - If validation fails, report the repository blocker and continue unrelated repositories when safe.
 - If an upstream dependency blocks, skip dependent repositories in that run.
 - If an Apply command would require arbitrary coding work or judgment-heavy audit work, dispatch it to Codex repo context when a dispatcher exists; otherwise block honestly.

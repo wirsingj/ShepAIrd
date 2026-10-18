@@ -9,13 +9,13 @@ durability: volatile; synthesize and prune aggressively.
 budget: About 2200 words; prune stale state before expanding.
 read-with: Architecture; Maintainer Guide; registry/projects.json.
 update-when: registry scope, portfolio command behavior, execution capability, or validation state changes.
-last-verified: 2026-09-20 for route counts, registry privacy shape, and validation state; older capability claims were not comprehensively re-audited.
+last-verified: 2026-10-17 for the checks scoped in the Maintainer Guide; unrelated claims retain prior evidence limits.
 agent-guidance: Preserve human control. Do not describe aspirational execution as implemented.
 ---
 
 # ShepAIrd State Of The Project
 
-Updated: 2026-09-20
+Updated: 2026-10-17
 
 ## Identity
 
@@ -25,7 +25,7 @@ Its founding purpose is to reduce repetitive manual Codex chat hopping without p
 
 The individual repositories remain the canonical owners of their project truth and implementation work. ShepAIrd coordinates and records operational run history; it does not replace downstream YAIML documents with a central copy and should not become the place where broad repo-specific audits or fixes are reasoned through.
 
-ShepAIrd must assume the human may use separate Codex chats or other tools inside any individual repository without telling this chat first. Each portfolio run should therefore rehydrate from current filesystem, Git, registry, and repository YAIML evidence instead of relying on this conversation's memory.
+ShepAIrd must assume the human may use separate Codex chats or other tools inside any individual repository without telling this chat first. Each portfolio run must rehydrate current filesystem, Git, registry and YAIML evidence. The maintainer identifies all projects as works in progress: latest working files, including uncommitted edits, are canonical; branch names and older releases do not establish current production state.
 
 ShepAIrd's emerging purpose is broader than YAIML maintenance, but it must stay thin. YAIML is the project-memory substrate; ShepAIrd should become the local command translator that helps Codex apply recurring self-audit pressure across registered apps. The human wants to say things like "run a security audit across all registered apps, fix safe issues, validate, and update YAIML" or swap security for performance, bug check, architecture, code readability, release readiness, test coverage, docs drift, or YAIML compliance.
 
@@ -38,9 +38,8 @@ The campaign runner must interpret each lens through each repository's own YAIML
 - Registry entries and project manifests now include each repository's `AI_USAGE.md` disclosure/provenance note as a discoverable supporting project surface.
 - Workspace discovery scans the configured workspace for Git repositories.
 - Registry reconciliation reports managed, missing, possible moved, discovered, excluded, inactive, and archived repository states.
-- YAIML discovery reads `yaiml.yml` first and treats `arcs.yml` as a temporary ARCS-era cleanup signal.
-- Repository-specific document paths are read from each repository's YAIML manifest rather than hardcoding a SoT path.
-- YAIML discovery supports both the older flat `documents.*.path` shape and the current nested `yaiml.core` / `yaiml.supporting` discovery shape used by the governing YAIML repository.
+- Portfolio and intake share root/`.yaiml/` discovery, including `.yml`/`.yaml`. Root maps retain precedence; ARCS is the fallback. Paths resolve from the selected map's directory for both `documents.*.path` and `yaiml.core` / `yaiml.supporting` layouts.
+- YAIML and Chaitroom registry entries reflect their local `.yaiml/` relocation. Read-only discovery, intake and campaign checks found all core/supporting files; root-layout controls in ShepAIrd and CoachAI passed. File hashes were unchanged during inspection.
 - Portfolio Inspect reports each repository's current Git branch, short HEAD, and clean/dirty state so external repo-chat changes are visible on the next run.
 - Registry validation commands can run from project subdirectories, which makes multi-package repositories such as Go-backend plus Vite-frontend apps validate from their real package roots.
 - The CLI supports portfolio commands: `node src/cli.mjs portfolio inspect|plan|validate|apply "..."`.
@@ -55,7 +54,7 @@ The campaign runner must interpret each lens through each repository's own YAIML
   - run records under `output/runs/`.
 - Apply mode blocks dangerous validation commands such as `git commit`, `git push`, `git reset`, `git clean`, deploy, publish, and release commands.
 - Dependency ordering is respected, and downstream repositories are skipped when an upstream dependency blocks.
-- Tests cover workspace discovery, registry reconciliation, legacy and current nested YAIML discovery, temporary ARCS discovery, Inspect/Plan/Apply interpretation, one-step and N-step command parsing, actual executor invocation, run recording, validation safety, dependency blocker isolation, and temporary ARCS cleanup.
+- On Windows/Node 22.22.3, all 41 tests passed, including 14 discovery regressions covering layouts, precedence, ARCS, campaign paths and bounded continuation. Build smoke and report generation passed; portfolio Inspect reported twelve inspected, zero blocked/failed. These local checks do not establish deployed behavior or downstream application validation.
 - Plan-mode campaign lenses are implemented for security, performance, bug-check/code-pattern review, architecture, readability, release readiness, test coverage, docs drift, and YAIML compliance.
 - Campaign Plan builds ephemeral per-repository Codex handoff context. It no longer writes stored campaign packet files.
 - Campaign handoff context includes bounded file inventory signals and package-script summaries, so Plan output is grounded in more than registry metadata alone.

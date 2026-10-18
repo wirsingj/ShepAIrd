@@ -4,6 +4,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { promisify } from "node:util";
 import { loadRegistry, orderProjects } from "./registry.mjs";
+import { readMemoryManifest, resolveMemoryDocuments } from "./yaiml.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -246,25 +247,10 @@ export function reconcileWorkspace(registry, discoveries) {
 }
 
 export async function readYaimlDocset(root) {
-  const yaimlPath = path.join(root, "yaiml.yml");
-  const temporaryArcsPath = path.join(root, "arcs.yml");
-  const hasYaiml = await pathExists(yaimlPath);
-  const hasTemporaryArcs = await pathExists(temporaryArcsPath);
-  const manifestPath = hasYaiml ? yaimlPath : hasTemporaryArcs ? temporaryArcsPath : "";
-  const raw = manifestPath ? await fs.readFile(manifestPath, "utf8") : "";
-  const documents = parseManifestDocuments(raw);
+  const manifest = await readMemoryManifest(root);
   return {
-    manifest: manifestPath ? path.basename(manifestPath) : "",
-    manifestPath,
-    temporaryArcs: !hasYaiml && hasTemporaryArcs,
-    legacy: !hasYaiml && hasTemporaryArcs,
-    hasYaiml,
-    hasTemporaryArcs,
-    raw,
-    statusDocuments: documents.statusDocuments,
-    architectureDocuments: documents.architectureDocuments,
-    maintainerDocuments: documents.maintainerDocuments,
-    supportingDocuments: documents.supportingDocuments,
+    ...manifest,
+    ...resolveMemoryDocuments(manifest.manifest, parseManifestDocuments(manifest.raw)),
   };
 }
 
@@ -462,21 +448,21 @@ function formatAuditSurfaceSummary(surfaces, limit = 6) {
 async function applyTemporaryArcsCleanup(root, docset, result) {
   if (!docset.hasTemporaryArcs) {
     result.status = "completed";
-    result.notes.push("No temporary-only arcs.yml manifest found.");
+    result.notes.push("No temporary ARCS manifest found.");
     return;
   }
   if (docset.hasYaiml) {
     result.status = "blocked";
-    result.blockers.push("Both yaiml.yml and arcs.yml exist; manual reconciliation is required.");
+    result.blockers.push("Both YAIML and temporary ARCS manifests exist; manual reconciliation is required.");
     return;
   }
-  const oldPath = path.join(root, "arcs.yml");
+  const oldPath = docset.manifestPath;
   const newPath = path.join(root, "yaiml.yml");
   const updated = migrateManifestText(docset.raw);
   await fs.writeFile(newPath, updated, "utf8");
   await fs.unlink(oldPath);
-  result.filesChanged.push("yaiml.yml", "arcs.yml");
-  result.notes.push("Renamed temporary arcs.yml discovery file to yaiml.yml.");
+  result.filesChanged.push("yaiml.yml", docset.manifest);
+  result.notes.push(`Renamed temporary ${docset.manifest} discovery file to yaiml.yml.`);
 }
 
 async function applyOneContinuationStep(project, docset, result) {

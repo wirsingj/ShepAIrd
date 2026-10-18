@@ -9,7 +9,7 @@ durability: stable; update when registry shape, command flow, executor capabilit
 budget: About 2000 words; preserve necessary invariants if exceeded.
 read-with: SOT; Maintainer Guide; registry/projects.json.
 update-when: registry semantics, workspace reconciliation, CLI/app responsibilities, run records, or executor boundaries change.
-last-verified: not established; claims not rechecked in this refresh.
+last-verified: 2026-10-17 for memory discovery and path resolution; unrelated claims not rechecked.
 agent-guidance: Keep ShepAIrd request-driven, repository-specific, and honest about executor limits.
 ---
 
@@ -34,6 +34,7 @@ ShepAIrd may inspect, plan, dispatch, and, for implemented bounded Apply actions
 - `registry/local-routes.json`: ignored local overlay for private Codex Project and touchpoint task coordinates when present.
 - `src/registry.mjs`: registry loader, project inspector, status report builder, capability mapper, and Codex Project/task route-map reporter.
 - `src/intake.mjs`: workspace/repo scanner used by the shell.
+- `src/yaiml.mjs`: shared manifest selection and map-relative document resolution for intake and portfolio commands.
 - `src/intakeView.mjs`: dependency-free Token Strip and dossier rendering helpers.
 - `src/portfolio.mjs`: portfolio command interpreter, workspace discovery, registry reconciliation, YAIML manifest reader, direct executor, validation runner, blocker isolation, and run-record writer.
 - `src/cli.mjs`: command-line surface for reports and portfolio commands.
@@ -53,7 +54,7 @@ human command
   -> order by dependency order
   -> compare each repository with the previous run record when available
   -> if resume is requested, skip previous matching completed/dispatched repositories
-  -> read each repository's yaiml.yml or temporary arcs.yml
+  -> select root or .yaiml/ discovery, falling back to temporary ARCS
   -> inspect git branch/head/status and registered validation
   -> inspect, plan, validate, or apply one bounded action per repository
   -> validate each repository separately
@@ -145,6 +146,7 @@ For repositories missing saved Codex Projects or touchpoint tasks, ShepAIrd shou
 - Codex remains the reasoning and coding surface; ShepAIrd supplies local evidence, routing, prompts, and validation scaffolding.
 - Downstream repositories own their own YAIML truth.
 - Current filesystem, Git, and repository YAIML evidence wins over this chat's memory.
+- Discovery checks root `yaiml.yml`, root `yaiml.yaml`, then `.yaiml/` equivalents, then root `arcs.yml`/`arcs.yaml`. Select one map; never merge roles across maps. Both discovery shapes resolve paths from that map's directory and expose repository-relative paths. Intake prioritizes declared documents over filename guesses. Registry evidence paths remain separately maintained metadata.
 - One global command may produce different repository-specific work in each target repository.
 - Campaign lenses must be interpreted through each repo's YAIML, code shape, and validation surface, then handed to Codex/repo context for reasoning-heavy work.
 - Previous-run comparison is observational only; it detects changed snapshots without attributing authorship.

@@ -2,6 +2,7 @@ import { execFile } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { promisify } from "node:util";
+import { ARCS_MANIFEST_PATHS, YAIML_MANIFEST_PATHS, readMemoryManifest, resolveMemoryDocuments } from "./yaiml.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -30,14 +31,8 @@ const docGroups = Object.freeze({
     "CLAUDE.md",
     ".github/copilot-instructions.md",
   ],
-  arcsDocs: [
-    "arcs.yml",
-    "arcs.yaml",
-  ],
-  yaimlDocs: [
-    "yaiml.yml",
-    "yaiml.yaml",
-  ],
+  arcsDocs: ARCS_MANIFEST_PATHS,
+  yaimlDocs: YAIML_MANIFEST_PATHS,
 });
 
 const packageManifests = Object.freeze([
@@ -74,14 +69,11 @@ export async function scanFolder(folderPath) {
   }
 
   const documents = {};
-  const yaimlCandidateDocs = await findDocs(absolutePath, docGroups.yaimlDocs);
-  const temporaryArcsCandidateDocs = await findDocs(absolutePath, docGroups.arcsDocs);
-  const yaimlText = await readFirstExisting(absolutePath, yaimlCandidateDocs);
-  const temporaryArcsText = yaimlText ? "" : await readFirstExisting(absolutePath, temporaryArcsCandidateDocs);
-  const manifestText = yaimlText || temporaryArcsText;
-  const declaredDocs = parseArcsDocumentPaths(manifestText);
+  const manifest = await readMemoryManifest(absolutePath);
+  const manifestText = manifest.raw;
+  const declaredDocs = resolveMemoryDocuments(manifest.manifest, parseArcsDocumentPaths(manifestText));
   for (const [group, candidates] of Object.entries(docGroups)) {
-    const expanded = [...candidates, ...(declaredDocs[group] ?? [])];
+    const expanded = [...(declaredDocs[group] ?? []), ...candidates];
     documents[group] = await findDocs(absolutePath, uniqueStrings(expanded));
   }
 

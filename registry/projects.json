@@ -1,7 +1,7 @@
 {
   "schema": "shepaird.registry.v0",
   "workspaceRoot": "..",
-  "managedPolicy": "apply commands target active projects with managed true; discovered repositories are inspect-only until added or explicitly included",
+  "managedPolicy": "apply commands target active projects with managed true; discovered repositories are inspect-only until added or explicitly included. Projects are works in progress; latest working files including uncommitted edits are canonical",
   "generatedFrom": "Manual audit plus workspace reconciliation of the configured workspace on 2026-07-15",
   "dependencyOrder": ["yaiml", "shepaird", "llamasaddle", "chaitroom", "lorekeeper", "spritewrite", "maicroflow", "aiwiki", "ytfictiongen", "oobhunter", "ooze-tactics", "ytmmocaptions"],
   "projects": [
@@ -13,11 +13,11 @@
       "managed": true,
       "lifecycle": "active",
       "dependencyTier": 0,
-      "statusDocuments": ["docs/SoTY.md"],
-      "architectureDocuments": ["docs/ARCHITECTURE.md"],
-      "maintainerDocuments": ["docs/MAINTAINER_GUIDE.md"],
+      "statusDocuments": [".yaiml/SoTY.md"],
+      "architectureDocuments": [".yaiml/ARCHITECTURE.md"],
+      "maintainerDocuments": [".yaiml/MAINTAINER_GUIDE.md"],
       "agentInstructions": ["AGENTS.md"],
-      "yaimlDocuments": ["yaiml.yml", "docs/SoTY.md", "docs/ARCHITECTURE.md", "docs/MAINTAINER_GUIDE.md", "AI_USAGE.md"],
+      "yaimlDocuments": [".yaiml/yaiml.yml", ".yaiml/SoTY.md", ".yaiml/ARCHITECTURE.md", ".yaiml/MAINTAINER_GUIDE.md", ".yaiml/AI_USAGE.md"],
       "dependsOn": [],
       "capabilities": {
         "produces": ["yaiml-project-memory"],
@@ -28,7 +28,7 @@
         {
           "capability": "yaiml-project-memory",
           "role": "producer",
-          "paths": ["yaiml.yml", "docs/SoTY.md", "docs/ARCHITECTURE.md", "docs/MAINTAINER_GUIDE.md", "AI_USAGE.md"],
+          "paths": [".yaiml/yaiml.yml", ".yaiml/SoTY.md", ".yaiml/ARCHITECTURE.md", ".yaiml/MAINTAINER_GUIDE.md", ".yaiml/AI_USAGE.md"],
           "summary": "Defines the YAIML project-memory convention family ShepAIrd consumes internally."
         }
       ],
@@ -98,11 +98,11 @@
       "managed": true,
       "lifecycle": "active",
       "dependencyTier": 3,
-      "statusDocuments": ["SOT.md"],
-      "architectureDocuments": ["ARCHITECTURE.md"],
-      "maintainerDocuments": ["MAINTAINER_GUIDE.md"],
-      "agentInstructions": [],
-      "yaimlDocuments": ["yaiml.yml", "SOT.md", "ARCHITECTURE.md", "MAINTAINER_GUIDE.md", "AI_USAGE.md"],
+      "statusDocuments": [".yaiml/SOT.md"],
+      "architectureDocuments": [".yaiml/ARCHITECTURE.md"],
+      "maintainerDocuments": [".yaiml/MAINTAINER_GUIDE.md"],
+      "agentInstructions": ["AGENTS.md"],
+      "yaimlDocuments": [".yaiml/yaiml.yml", ".yaiml/SOT.md", ".yaiml/ARCHITECTURE.md", ".yaiml/MAINTAINER_GUIDE.md", "AI_USAGE.md"],
       "dependsOn": ["yaiml"],
       "capabilities": {
         "produces": ["provider-adapter-contract", "bounded-agent-routing", "multi-agent-room-transcript"],
@@ -367,7 +367,7 @@
     {
       "id": "ytmmocaptions",
       "name": "YTMMOCC",
-      "kind": "production-browser-extension",
+      "kind": "browser-extension",
       "path": "../ytmmocaptions",
       "managed": true,
       "lifecycle": "active",
@@ -388,10 +388,10 @@
           "capability": "browser-extension-release-pipeline",
           "role": "producer",
           "paths": ["README.md", "MAINTAINER_GUIDE.md", "manifest.chrome.json", "manifest.firefox.json", ".github/workflows/1-prepare-release.yml"],
-          "summary": "Production Chrome/Firefox WebExtension with release packaging, store workflow docs, and mature YAIML project memory."
+          "summary": "Chrome/Firefox WebExtension with release packaging, store workflow docs, and mature YAIML project memory."
         }
       ],
-      "notes": "Codex-created production/released repo; treat as one of the most mature portfolio projects rather than an experimental side repo."
+      "notes": "Work in progress per maintainer direction; prior release evidence does not establish current production state. Preserve the latest working files, including uncommitted edits."
     }
   ]
 }
