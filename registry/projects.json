@@ -140,7 +140,7 @@
       "architectureDocuments": ["docs/ARCHITECTURE.md"],
       "maintainerDocuments": ["docs/MAINTAINER_GUIDE.md"],
       "agentInstructions": ["AGENTS.md"],
-      "yaimlDocuments": ["yaiml.yml", "docs/state-of-the-table.md", "docs/ARCHITECTURE.md", "docs/MAINTAINER_GUIDE.md", "AI_USAGE.md"],
+      "yaimlDocuments": [".yaiml/yaiml.yml", ".yaiml/changes.md", "docs/state-of-the-table.md", "docs/ARCHITECTURE.md", "docs/MAINTAINER_GUIDE.md", "AI_USAGE.md"],
       "dependsOn": ["yaiml"],
       "capabilities": {
         "produces": ["provider-response-review", "table-authority-rails", "local-ollama-provider-runtime"],
