@@ -41,7 +41,7 @@ The campaign runner must interpret each lens through each repository's own YAIML
 - Workspace discovery scans the configured workspace for Git repositories.
 - Registry reconciliation reports managed, missing, possible moved, discovered, excluded, inactive, and archived repository states.
 - Portfolio and intake share root/`.yaiml/` discovery, including `.yml`/`.yaml`. Root maps retain precedence; ARCS is the fallback. Paths resolve from the selected map's directory for both `documents.*.path` and `yaiml.core` / `yaiml.supporting` layouts.
-- YAIML and Chaitroom registry entries reflect their local `.yaiml/` relocation. Read-only discovery, intake and campaign checks found all core/supporting files; root-layout controls in ShepAIrd and CoachAI passed. File hashes were unchanged during inspection.
+- Registry pointers for YAIML, Chaitroom, SpriteWrite, mAIcroFlow, ytfictiongen and YTMMOCC follow their current `.yaiml/` core locations. ytfictiongen's checkout still uses the `ytdoc` folder name pending a safe folder rename. Root-layout controls in ShepAIrd and CoachAI retain their own discovery locations.
 - Portfolio Inspect reports each repository's current Git branch, short HEAD, and clean/dirty state so external repo-chat changes are visible on the next run.
 - Registry validation commands can run from project subdirectories, which makes multi-package repositories such as Go-backend plus Vite-frontend apps validate from their real package roots.
 - The CLI supports portfolio commands: `node src/cli.mjs portfolio inspect|plan|validate|apply "..."`.
