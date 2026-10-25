@@ -15,13 +15,15 @@ agent-guidance: Preserve human control. Do not describe aspirational execution a
 
 # ShepAIrd State Of The Project
 
-Updated: 2026-10-17
+Updated: 2026-10-24
 
 ## Identity
 
 ShepAIrd is the human's thin local instruction router for Codex work across repositories beneath the configured parent Git workspace.
 
-Its founding purpose is to reduce repetitive manual Codex chat hopping without pretending to be better than Codex. The human is expected to interact with ShepAIrd mostly through this Codex project folder/chat. ShepAIrd should tell Codex what to do in each registered app by offloading boring local coordination to deterministic files and commands: resolve relevant managed repositories, read each repository's YAIML documents, interpret the command in that repository's context, prepare handoff prompts, execute only tiny bounded support utilities, validate separately, update local YAIML truth when appropriate, record the run, and return one combined result.
+ShepAIrd reduces repetitive Codex chat hopping. The human works through this Codex project folder/chat; deterministic commands resolve managed repositories, read their YAIML, interpret requests locally, prepare handoffs, execute tiny bounded support utilities, validate separately, update changed project truth, record runs, and combine results. Codex supplies repository-specific reasoning and implementation.
+
+Proposed secondary role: collect information from registered repositories, including commit rates and YAIML document trends, with room for other portfolio signals. This would extend existing inspection into historical reporting. Collection scope and implementation remain undecided; the proposal leaves the ordered priorities below unchanged.
 
 The individual repositories remain the canonical owners of their project truth and implementation work. ShepAIrd coordinates and records operational run history; it does not replace downstream YAIML documents with a central copy and should not become the place where broad repo-specific audits or fixes are reasoned through.
 
@@ -65,7 +67,7 @@ The campaign runner must interpret each lens through each repository's own YAIML
 - Registry loading supports ignored local route overlays for `codexProject` and `codexThread` metadata. Status reports show saved Codex Project routing, mapped or unmapped touchpoint tasks, and campaign handoffs carry local route metadata for dispatchers without requiring private paths in the public registry.
 - `node src/cli.mjs threads` and `npm run threads` generate a dedicated Codex route map with saved Project counts, missing Project counts, mapped/unmapped touchpoint counts, route health, setup-needed guidance, task cwd checks, dirty/clean state, and validation commands.
 - `npm run all` now writes `output/codex-task-map.md` beside the status and capability reports.
-- Confirmed saved Codex Projects and durable touchpoint task mappings currently exist for YAIML, ShepAIrd, Chaitroom, LoreKeeper, SpriteWrite, mAIcroFlow, ytfictiongen/ytdoc, and YTMMOCC. LlamaSaddle, AIWIKI, OOBHunter, and ooze-tactics do not have durable repo-root Codex Projects or touchpoint task mappings yet.
+- Live metadata confirms repo-root Projects/chats for YAIML, Chaitroom, LoreKeeper, SpriteWrite, mAIcroFlow, ytfictiongen/ytdoc, YTMMOCC, and ooze-tactics. The local overlay omits ooze-tactics and retains a stale ShepAIrd chat route. LlamaSaddle, AIWIKI and OOBHunter remain unmapped.
 - Task-route checks now treat parent-workspace task mappings as valid only when `scopePath` matches the registry path and sits inside the task cwd.
 - Campaign handoff prompts include a routing guard that repeats the repository scope, saved Codex Project, mapped touchpoint task, task cwd, optional scope path, and stop condition before repo-specific audit instructions.
 - Parent-workspace tasks created for the unmapped repos were archived after they cluttered the `git` project task list. They are not retained as stable registry mappings.
@@ -92,7 +94,7 @@ The previous answer reduced ShepAIrd to inspection and work packets because that
 - Campaign handoff context is in-run evidence, not a stored artifact and not proof of execution.
 - Campaign handoff context is generated from registry metadata, YAIML metadata, current Git state, bounded file inventory, package-script summaries, Codex Project/task metadata, and shallow docs/YAIML content signals. The programmatic dispatcher hook exists, and the CLI can now report a Codex route map, but CLI/Electron surfaces still do not message actual Codex repo chats. Handoff context still does not perform deep source-content audit or produce findings without Codex doing the audit in the target repo context.
 - Repository `codexProject` and `codexThread` IDs should be written into ignored local route overlay data only after exact routing is confirmed from Codex app project/task metadata. Parent-workspace `scopePath` tasks are technically supported, but they should be treated as explicit temporary exceptions because they clutter the parent project task list and feel fragile.
-- Codex tasks are inherently softer routing than a local process cwd. A task can be renamed, interrupted, waiting on approval, archived, or pointed at a parent workspace. ShepAIrd guards path scope, but it still cannot prove live task health from the plain CLI.
+- CLI route checks compare saved metadata, not live cwd or execution health. Live inspection found ShepAIrd's mapped chat bound to its former directory despite a ready report. Confirm live routes and startup results; accepted messages can still fail on unsupported saved models.
 
 ## Default Command Meaning
 
@@ -129,7 +131,7 @@ YAIML
 ## Next Five Steps
 
 1. Add reporting for active/waiting/completed task state when Codex task metadata is available.
-2. Create saved repo-root Codex Projects and one durable touchpoint task for LlamaSaddle, AIWIKI, OOBHunter, and ooze-tactics only when the human explicitly wants those sidebar homes.
+2. Reconcile ooze-tactics and ShepAIrd routes; create repo-root Projects/chats for LlamaSaddle, AIWIKI and OOBHunter only when the human explicitly wants those sidebar homes.
 3. Wire the programmatic `handoffDispatcher` hook to Codex app thread routing for mapped repositories.
 4. Keep the Electron shell and CLI minimal; avoid UI/product work unless it directly improves Codex-driven coordination.
 5. Allow deterministic Apply behavior only for tiny support utilities, not broad audit/fix engines that should run inside Codex repo context.
